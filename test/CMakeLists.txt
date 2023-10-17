@@ -1,1 +1,2 @@
 add_subdirectory(test00_window)
+add_subdirectory(test01_draw_point)
