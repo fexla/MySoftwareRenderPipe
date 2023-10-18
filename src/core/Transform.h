@@ -13,7 +13,7 @@ public:
     EulerAngle rotation;
 };
 
-Matrix4x4 getModelMatrix(Transform &objectTransform) {
+Matrix4x4 getModelMatrix(const Transform &objectTransform) {
     auto &rotation = objectTransform.rotation;
     auto position = objectTransform.position;
     auto matrix = rotation.rotationMatrix();
@@ -23,7 +23,7 @@ Matrix4x4 getModelMatrix(Transform &objectTransform) {
     return matrix;
 }
 
-Matrix4x4 getViewMatrix(Transform &cameraTransform) {
+Matrix4x4 getViewMatrix(const Transform &cameraTransform) {
     auto &rotation = cameraTransform.rotation;
     auto &position = cameraTransform.position;
     Matrix4x4 matrix = {

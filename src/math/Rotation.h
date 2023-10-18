@@ -6,6 +6,7 @@
 #define MYSOFTWARERENDERPIPE_ROTATION_H
 
 #include "Matrix.h"
+
 using Matrix4x4 = Matrix<float, 4, 4>;
 
 class EulerAngle {
@@ -22,7 +23,7 @@ public:
         return z;
     }
 
-    Matrix4x4 rotationMatrix() {
+    Matrix4x4 rotationMatrix() const {
         float s3 = sin(x);
         float s2 = sin(y);
         float s1 = sin(z);
