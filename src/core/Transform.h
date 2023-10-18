@@ -6,6 +6,7 @@
 #define MYSOFTWARERENDERPIPE_TRANSFORM_H
 
 #include "renderer_math.h"
+#include "cmath"
 
 class Transform {
 public:
@@ -33,6 +34,16 @@ Matrix4x4 getViewMatrix(const Transform &cameraTransform) {
             0, 0, 0, 1,
     };
     return rotation.rotationMatrix().transpose() * matrix;
+}
+
+Matrix4x4 getPerspectiveProjectionMatrix(float fov, float aspect, float far, float near) {
+    fov /= 2;
+    return {
+            1 / tan(fov) / aspect, 0, 0, 0,
+            0, 1 / tanh(fov), 0, 0,
+            0, 0, (far + near) / (far - near), -2 * near * far / (far - near),
+            0, 0, -1, 0
+    };
 }
 
 #endif //MYSOFTWARERENDERPIPE_TRANSFORM_H
