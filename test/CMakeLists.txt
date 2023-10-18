@@ -1,3 +1,4 @@
 add_subdirectory(test00_window)
 add_subdirectory(test01_draw_point)
 add_subdirectory(test02_linear_algebra)
+add_subdirectory(test03_vertexTransform)

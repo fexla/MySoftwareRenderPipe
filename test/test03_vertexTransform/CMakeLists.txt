@@ -1,0 +1,2 @@
+add_executable(test03 main.cpp)
+target_link_libraries(test03 renderer_math renderer_core)
