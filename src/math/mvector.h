@@ -35,40 +35,43 @@ public:
         return *this;
     }
 
-    Data_Type &operator[](const size_t &x) &{
+    const Matrix_Type &asMatrix() const {
+        return *this;
+    }
+
+    Data_Type &operator[](const size_t &x) {
         return Matrix_Type::operator[](x)[0];
     }
 
-    auto operator[](const size_t &x) const &{
+    auto operator[](const size_t &x) const {
         return Matrix_Type::operator[](x)[0];
     }
 
-    mvector operator+(const mvector &another) {
+    mvector operator+(const mvector &another) const {
         return (mvector) Matrix_Type::operator+(another);
     }
 
-    mvector operator+=(const mvector &another) {
-        return (mvector) Matrix_Type::operator+=(another);
+    mvector &operator+=(const mvector &another) {
+        return (mvector &) Matrix_Type::operator+=(another);
     }
 
-    mvector operator-(const mvector &another) {
+    mvector operator-(const mvector &another) const {
         return (mvector) Matrix_Type::operator-(another);
     }
 
-    mvector operator-=(const mvector &another) {
-        return (mvector) Matrix_Type::operator-=(another);
+    mvector &operator-=(const mvector &another) {
+        return (mvector &) Matrix_Type::operator-=(another);
     }
 
     template<size_t M, size_t N>
-    auto operator*(const matrix<Data_Type, M, N> &another) {
-        auto x = asMatrix().operator*(another);
+    auto operator*(const matrix<Data_Type, M, N> &another) const {
+        auto x = asMatrix() * (another);
         return x;
     }
 
     template<size_t M>
     friend mvector<Data_Type, M> operator*(matrix<Data_Type, M, Dim> matrix, mvector vector) {
         return static_cast<mvector<Data_Type, M>>(matrix * vector.asMatrix());
-//        return matrix * mvector.asMatrix();
     }
 
     /**
@@ -79,7 +82,7 @@ public:
      */
     template<typename Multiplier_Type>
     typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, mvector>::type
-    operator*(const Multiplier_Type &num) {
+    operator*(const Multiplier_Type &num) const {
         return static_cast<mvector>(Matrix_Type::operator*(num));
     }
 
@@ -106,11 +109,11 @@ public:
     }
 
 
-    bool operator==(const mvector rhs) {
+    bool operator==(const mvector rhs) const {
         return Matrix_Type::operator==(rhs);
     }
 
-    bool operator!=(const mvector rhs) {
+    bool operator!=(const mvector rhs) const {
         return Matrix_Type::operator!=(rhs);
     }
 
@@ -155,12 +158,44 @@ public:
      * 得到向量的模
      * @return
      */
-    Data_Type abs() {
-        Data_Type sum{};
+    auto abs() const {
+        double sum{};
         for (int i = 0; i < Dim; ++i) {
             sum += operator[](i) * operator[](i);
         }
         return sqrt(sum);
+    }
+
+    /**
+     * 得到向量的模的平方
+     * @return
+     */
+    auto abs_sq() const {
+        double sum{};
+        for (int i = 0; i < Dim; ++i) {
+            sum += operator[](i) * operator[](i);
+        }
+        return sum;
+    }
+
+    /**
+     * 得到两个向量之间的距离
+     * @param another 另一个向量
+     * @return 距离
+     */
+    auto dist(const mvector &another) const {
+        mvector dif = operator-(another);
+        return dif.abs();
+    }
+
+    /**
+     * 得到两个向量之间的距离的平方
+     * @param another 另一个向量
+     * @return 距离的平方
+     */
+    auto dist_sq(const mvector &another) const {
+        mvector dif = operator-(another);
+        return dif.abs_sq();
     }
 
     mvector &normalize() {
@@ -206,6 +241,16 @@ template<typename Data_Type, size_t Dim>
 auto mvector<Data_Type, Dim>::cross(const mvector &another) {
     static_assert(Dim == 2 || Dim == 3);
     return ::cross(*this, another);
+}
+
+template<typename Data_Type, size_t Dim>
+auto dist(const mvector<Data_Type, Dim> &v1, const mvector<Data_Type, Dim> &v2) {
+    return v1.dist(v2);
+}
+
+template<typename Data_Type, size_t Dim>
+auto dist_sq(const mvector<Data_Type, Dim> &v1, const mvector<Data_Type, Dim> &v2) {
+    return v1.dist_sq(v2);
 }
 
 #endif //MYSOFTWARERENDERPIPE_MVECTOR_H

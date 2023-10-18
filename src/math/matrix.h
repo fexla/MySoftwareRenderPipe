@@ -47,11 +47,11 @@ public:
     matrix(matrix &&) = default;
 
 
-    auto operator[](const size_t &x) &{
+    auto operator[](const size_t &x){
         return data[x];
     }
 
-    auto operator[](const size_t &x) const &{
+    auto operator[](const size_t &x) const{
         return data[x];
     }
 
@@ -121,7 +121,8 @@ public:
      * @return 乘法运算结果
      */
     template<typename Multiplier_Type>
-    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, matrix>::type operator*(const Multiplier_Type &num) {
+    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, matrix>::type
+    operator*(const Multiplier_Type &num) const {
         matrix ans{};
         for (int i = 0; i < M; ++i) {
             for (int j = 0; j < N; ++j) {
