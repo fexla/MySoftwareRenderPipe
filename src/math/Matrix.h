@@ -33,7 +33,7 @@ public:
         for (auto val: initializerList) {
             *(ptr++) = val;
         }
-        while ((*(data + M-1) + N) - ptr>0) {
+        while ((*(data + M - 1) + N) - ptr > 0) {
             *(ptr++) = 0;
         }
     }
@@ -150,21 +150,31 @@ public:
     template<typename Multiplier_Type>
     typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, Matrix>::type operator/(const Multiplier_Type &num) {
         assert(num != 0);
-        Matrix ans{};
-        for (int i = 0; i < M; ++i) {
-            for (int j = 0; j < N; ++j) {
-                ans[i][j] = data[i][j] / num;
+        if constexpr (std::is_floating_point_v<Multiplier_Type>) {
+            Multiplier_Type inv = 1 / num;
+            return operator*(inv);
+        } else {
+            Matrix ans{};
+            for (int i = 0; i < M; ++i) {
+                for (int j = 0; j < N; ++j) {
+                    ans[i][j] = data[i][j] / num;
+                }
             }
+            return ans;
         }
-        return ans;
     }
 
     template<typename Multiplier_Type>
     typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, void>::type operator/=(const Multiplier_Type &num) {
         assert(num != 0);
-        for (int i = 0; i < M; ++i) {
-            for (int j = 0; j < N; ++j) {
-                data[i][j] /= num;
+        if constexpr (std::is_floating_point_v<Multiplier_Type>) {
+            Multiplier_Type inv = 1 / num;
+            operator*=(inv);
+        } else {
+            for (int i = 0; i < M; ++i) {
+                for (int j = 0; j < N; ++j) {
+                    data[i][j] /= num;
+                }
             }
         }
     }
