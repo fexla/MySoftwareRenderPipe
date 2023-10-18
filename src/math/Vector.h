@@ -43,28 +43,32 @@ public:
         return Matrix_Type::operator[](x)[0];
     }
 
-    Vector operator+(const Vector another) {
+    Vector operator+(const Vector &another) {
         return (Vector) Matrix_Type::operator+(another);
     }
 
-    Vector operator+=(const Vector another) {
+    Vector operator+=(const Vector &another) {
         return (Vector) Matrix_Type::operator+=(another);
     }
 
-    Vector operator-(const Vector another) {
+    Vector operator-(const Vector &another) {
         return (Vector) Matrix_Type::operator-(another);
     }
 
-    Vector operator-=(const Vector another) {
+    Vector operator-=(const Vector &another) {
         return (Vector) Matrix_Type::operator-=(another);
     }
 
-    Vector operator*(const Vector another) {
-        return (Vector) Matrix_Type::operator*(another);
+    template<size_t M, size_t N>
+    auto operator*(const Matrix<Data_Type, M, N> &another) {
+        auto x = asMatrix().operator*(another);
+        return x;
     }
 
-    Vector operator*=(const Vector another) {
-        return (Vector) Matrix_Type::operator*=(another);
+    template<size_t M>
+    friend Vector<Data_Type, M> operator*(Matrix<Data_Type, M, Dim> matrix, Vector vector) {
+        return static_cast<Vector<Data_Type, M>>(matrix * vector.asMatrix());
+//        return matrix * vector.asMatrix();
     }
 
     /**

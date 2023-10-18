@@ -39,7 +39,7 @@ int main() {
     std::cout << v3 << " dot " << v5 << "=" << (dot(v3, v5)) << std::endl;
     std::cout << v4 << " dot " << v5 << "=" << (dot(v4, v5)) << std::endl;
 
-    std::cout << "向量插乘：" << std::endl;
+    std::cout << "向量叉乘：" << std::endl;
     std::cout << v3 << " cross " << v3 << "=" << (v3.cross(v3)) << std::endl;
     std::cout << v3 << " cross " << v4 << "=" << (cross(v3, v4)) << std::endl;
 
@@ -50,5 +50,13 @@ int main() {
     std::cout << v6 << " .abs " << "=" << v6.abs() << std::endl;
     std::cout << v3 << " .norm " << "=" << v3.norm_vec() << std::endl;
     std::cout << v3 << " .normalize " << "=>" << (v3.normalize()) << std::endl;
+    v3 = {1, 2, 3};
+
+    std::cout << "向量与矩阵相乘：" << std::endl;
+    Matrix<double, 1, 3> m1 = {1, 2, 3};
+    Matrix<double, 3, 3> m2 = {1, 2, 3, 1, 2, 3, 1, 2, 3};
+    std::cout << v3 << "*\n" << m1 << "=\n" << (v3 * m1) << std::endl;
+    std::cout << m1 << "*\n" << v3 << "=\n" << (m1 * v3) << std::endl;
+    std::cout << m2 << "*\n" << v3 << "=\n" << (m2 * v3) << std::endl;
 
 }
