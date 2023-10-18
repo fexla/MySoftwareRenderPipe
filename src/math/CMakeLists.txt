@@ -1,6 +1,7 @@
 add_library(renderer_math STATIC
         Matrix.h
         Vector.h
+        renderer_math.h
         Rotation.h)
 
 set_target_properties(renderer_math PROPERTIES LINKER_LANGUAGE CXX)

@@ -6,7 +6,7 @@
 #define MYSOFTWARERENDERPIPE_ROTATION_H
 
 #include "Matrix.h"
-#include "renderer_math.h"
+using Matrix4x4 = Matrix<float, 4, 4>;
 
 class EulerAngle {
 public:
