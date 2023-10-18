@@ -3,6 +3,7 @@
 //
 #include "renderer_math.h"
 #include "Transform.h"
+#include "ViewPoint.h"
 
 const float PI = 3.1415926535898;
 
@@ -15,4 +16,11 @@ int main() {
     std::cout << "transform " << pos << ":" << std::endl;
     std::cout << transform1.getModelMatrix() * pos << std::endl;
     std::cout << transform2.getModelMatrix() * pos << std::endl;
+
+    std::cout << "view transform " << pos << ":" << std::endl;
+    ViewPoint vp1{transform1};
+    ViewPoint vp2{transform2};
+    std::cout << vp1.getViewMatrix()*transform1.getModelMatrix() * pos << std::endl;
+    std::cout << vp2.getViewMatrix()*(transform2.getModelMatrix() * pos) << std::endl;
+
 }
