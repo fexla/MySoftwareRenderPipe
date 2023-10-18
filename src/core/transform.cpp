@@ -1,9 +1,9 @@
 //
 // Created by q on 2023/10/18.
 //
-#include "Transform.h"
+#include "transform.h"
 
-Matrix4x4 getModelMatrix(const Transform &objectTransform) {
+Matrix4x4 getModelMatrix(const transform &objectTransform) {
     auto &rotation = objectTransform.rotation;
     auto position = objectTransform.position;
     auto matrix = rotation.rotationMatrix();
@@ -13,7 +13,7 @@ Matrix4x4 getModelMatrix(const Transform &objectTransform) {
     return matrix;
 }
 
-Matrix4x4 getViewMatrix(const Transform &cameraTransform) {
+Matrix4x4 getViewMatrix(const transform &cameraTransform) {
     auto &rotation = cameraTransform.rotation;
     auto &position = cameraTransform.position;
     Matrix4x4 matrix = {

@@ -5,9 +5,9 @@
 #ifndef MYSOFTWARERENDERPIPE_ROTATION_H
 #define MYSOFTWARERENDERPIPE_ROTATION_H
 
-#include "Matrix.h"
+#include "matrix.h"
 
-using Matrix4x4 = Matrix<float, 4, 4>;
+using Matrix4x4 = matrix<float, 4, 4>;
 
 class EulerAngle {
 public:

@@ -8,15 +8,15 @@
 #include "renderer_math.h"
 #include "cmath"
 
-class Transform {
+class transform {
 public:
     Vector3f position;
     EulerAngle rotation;
 };
 
-Matrix4x4 getModelMatrix(const Transform &objectTransform);
+Matrix4x4 getModelMatrix(const transform &objectTransform);
 
-Matrix4x4 getViewMatrix(const Transform &cameraTransform);
+Matrix4x4 getViewMatrix(const transform &cameraTransform);
 
 Matrix4x4 getPerspectiveProjectionMatrix(float fov, float aspect, float far, float near);
 

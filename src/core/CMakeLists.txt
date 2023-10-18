@@ -1,6 +1,6 @@
 add_library(renderer_core STATIC
-        Transform.h
-        Transform.cpp
+        transform.h
+        transform.cpp
 )
 
 set_target_properties(renderer_core PROPERTIES LINKER_LANGUAGE CXX)

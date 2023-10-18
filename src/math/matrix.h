@@ -15,12 +15,12 @@
  * @tparam N 列数
  */
 template<typename Data_Type, size_t M, size_t N>
-class Matrix {
+class matrix {
 public:
-    explicit Matrix() : data{} {
+    explicit matrix() : data{} {
     }
 
-    explicit Matrix(const Data_Type init_value) {
+    explicit matrix(const Data_Type init_value) {
         for (int i = 0; i < M; ++i) {
             for (int j = 0; j < N; ++j) {
                 data[i][j] = init_value;
@@ -28,7 +28,7 @@ public:
         }
     }
 
-    Matrix(std::initializer_list<Data_Type> initializerList) {
+    matrix(std::initializer_list<Data_Type> initializerList) {
         auto ptr = data[0];
         for (auto val: initializerList) {
             *(ptr++) = val;
@@ -38,13 +38,13 @@ public:
         }
     }
 
-    Matrix &operator=(Matrix &&) = default;
+    matrix &operator=(matrix &&) = default;
 
-    Matrix &operator=(const Matrix &) = default;
+    matrix &operator=(const matrix &) = default;
 
-    Matrix(const Matrix &) = default;
+    matrix(const matrix &) = default;
 
-    Matrix(Matrix &&) = default;
+    matrix(matrix &&) = default;
 
 
     auto operator[](const size_t &x) &{
@@ -55,8 +55,8 @@ public:
         return data[x];
     }
 
-    Matrix operator+(const Matrix &another) const {
-        Matrix<Data_Type, M, N> ans{};
+    matrix operator+(const matrix &another) const {
+        matrix<Data_Type, M, N> ans{};
         for (int i = 0; i < M; ++i) {
             for (int j = 0; j < N; ++j) {
                 ans[i][j] = data[i][j] + another.data[i][j];
@@ -65,7 +65,7 @@ public:
         return ans;
     }
 
-    Matrix &operator+=(const Matrix &another) {
+    matrix &operator+=(const matrix &another) {
         for (int i = 0; i < M; ++i) {
             for (int j = 0; j < N; ++j) {
                 data[i][j] += another.data[i][j];
@@ -74,8 +74,8 @@ public:
         return *this;
     }
 
-    Matrix operator-(const Matrix &another) const {
-        Matrix<Data_Type, M, N> ans{};
+    matrix operator-(const matrix &another) const {
+        matrix<Data_Type, M, N> ans{};
         for (int i = 0; i < M; ++i) {
             for (int j = 0; j < N; ++j) {
                 ans[i][j] = data[i][j] - another.data[i][j];
@@ -84,7 +84,7 @@ public:
         return ans;
     }
 
-    Matrix &operator-=(const Matrix &another) {
+    matrix &operator-=(const matrix &another) {
         for (int i = 0; i < M; ++i) {
             for (int j = 0; j < N; ++j) {
                 data[i][j] -= another.data[i][j];
@@ -101,9 +101,9 @@ public:
      * @return
      */
     template<size_t M2, size_t N2>
-    Matrix<Data_Type, M, N2> operator*(const Matrix<Data_Type, M2, N2> &another) const {
+    matrix<Data_Type, M, N2> operator*(const matrix<Data_Type, M2, N2> &another) const {
         static_assert(M2 == N);
-        Matrix<Data_Type, M, N2> ans{};
+        matrix<Data_Type, M, N2> ans{};
         for (int i = 0; i < M; ++i) {
             for (int j = 0; j < N2; ++j) {
                 for (int k = 0; k < N; ++k) {
@@ -121,8 +121,8 @@ public:
      * @return 乘法运算结果
      */
     template<typename Multiplier_Type>
-    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, Matrix>::type operator*(const Multiplier_Type &num) {
-        Matrix ans{};
+    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, matrix>::type operator*(const Multiplier_Type &num) {
+        matrix ans{};
         for (int i = 0; i < M; ++i) {
             for (int j = 0; j < N; ++j) {
                 ans[i][j] = data[i][j] * num;
@@ -132,7 +132,7 @@ public:
     }
 
     template<typename Multiplier_Type>
-    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, Matrix &>::type
+    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, matrix &>::type
     operator*=(const Multiplier_Type &num) {
         for (int i = 0; i < M; ++i) {
             for (int j = 0; j < N; ++j) {
@@ -149,13 +149,13 @@ public:
      * @return 除法运算结果
      */
     template<typename Multiplier_Type>
-    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, Matrix>::type operator/(const Multiplier_Type &num) {
+    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, matrix>::type operator/(const Multiplier_Type &num) {
         assert(num != 0);
         if constexpr (std::is_floating_point_v<Multiplier_Type>) {
             Multiplier_Type inv = 1 / num;
             return operator*(inv);
         } else {
-            Matrix ans{};
+            matrix ans{};
             for (int i = 0; i < M; ++i) {
                 for (int j = 0; j < N; ++j) {
                     ans[i][j] = data[i][j] / num;
@@ -166,7 +166,7 @@ public:
     }
 
     template<typename Multiplier_Type>
-    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, Matrix &>::type
+    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, matrix &>::type
     operator/=(const Multiplier_Type &num) {
         assert(num != 0);
         if constexpr (std::is_floating_point_v<Multiplier_Type>) {
@@ -183,19 +183,19 @@ public:
     }
 
     template<typename Multiplier_Type>
-    friend typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, Matrix>::type
-    operator*(const Multiplier_Type &num, const Matrix &matrix) {
-        Matrix ans{};
+    friend typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, matrix>::type
+    operator*(const Multiplier_Type &num, const matrix &mat) {
+        matrix ans{};
         for (int i = 0; i < M; ++i) {
             for (int j = 0; j < N; ++j) {
-                ans[i][j] = matrix[i][j] * num;
+                ans[i][j] = mat[i][j] * num;
             }
         }
         return ans;
     }
 
-    Matrix<Data_Type, N, M> transpose() const {
-        Matrix<Data_Type, N, M> ans;
+    matrix<Data_Type, N, M> transpose() const {
+        matrix<Data_Type, N, M> ans;
         for (int i = 0; i < M; ++i) {
             for (int j = 0; j < N; ++j) {
                 ans[j][i] = data[i][j];
@@ -205,12 +205,12 @@ public:
     }
 
 
-    friend std::ostream &operator<<(std::ostream &out, const Matrix<Data_Type, M, N> &matrix) {
-        out << "Matrix" << M << "x" << N << "{\n";
+    friend std::ostream &operator<<(std::ostream &out, const matrix<Data_Type, M, N> &mat) {
+        out << "matrix" << M << "x" << N << "{\n";
         for (int i = 0; i < M; ++i) {
             out << '{';
             for (int j = 0; j < N; ++j) {
-                out << matrix[i][j] << '\t';
+                out << mat[i][j] << '\t';
                 if (j == N - 1) {
                     out << "}\n";
                 } else {

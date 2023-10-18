@@ -2,7 +2,7 @@
 // Created by q on 2023/10/18.
 //
 #include "GLFW/glfw3.h"
-#include "Transform.h"
+#include "transform.h"
 
 const size_t W = 640;
 const size_t H = 480;
@@ -29,9 +29,9 @@ Vector3f points[] = {
         {-1,   -1, -1},
 };
 
-Transform objectTransform = {{0, 0, 0},
+transform objectTransform = {{0, 0, 0},
                              {0, 0, 0}};
-Transform cameraTransform = {{16, 6,          5},
+transform cameraTransform = {{16,    6,             5},
                              {-0.2,  3.1415926*0.5, 0}};
 
 void set_pixel(char *buffer, size_t x, size_t y, char r, char g, char b) {
@@ -84,7 +84,7 @@ void render(char *buffer) {
     auto mvp2 =
             getPerspectiveProjectionMatrix(45.0 / 180 * 3.1415926, 1.0 * W / H, 0.01, 100) *
             getViewMatrix(cameraTransform) *
-            getModelMatrix(Transform{{0, 0, 0},
+            getModelMatrix(transform{{0, 0, 0},
                                      {}});
     origin = tran(mvp2, origin);
     axis_x = tran(mvp2, axis_x);
