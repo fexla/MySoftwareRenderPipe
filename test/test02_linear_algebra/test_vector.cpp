@@ -50,7 +50,5 @@ int main() {
     std::cout << v6 << " .abs " << "=" << v6.abs() << std::endl;
     std::cout << v3 << " .norm " << "=" << v3.norm_vec() << std::endl;
     std::cout << v3 << " .normalize " << "=>" << (v3.normalize()) << std::endl;
-    v3 = {1, 2, 3};
-//    std::cout << m5 << "*\n" << m6 << "=\n" << (m5 * m6) << std::endl;
 
 }
