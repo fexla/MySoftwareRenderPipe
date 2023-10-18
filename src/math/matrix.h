@@ -182,6 +182,20 @@ public:
         return *this;
     }
 
+    bool operator==(const matrix &rhs) const {
+        bool ans = 1;
+        for (int i = 0; i < M; ++i) {
+            for (int j = 0; j < N; ++j) {
+                ans &= data[i][j] == rhs[i][j];
+            }
+        }
+        return ans;
+    }
+
+    bool operator!=(const matrix &rhs) const {
+        return !(rhs == *this);
+    }
+
     template<typename Multiplier_Type>
     friend typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, matrix>::type
     operator*(const Multiplier_Type &num, const matrix &mat) {

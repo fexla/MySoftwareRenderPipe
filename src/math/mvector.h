@@ -78,7 +78,8 @@ public:
      * @return 乘法运算结果
      */
     template<typename Multiplier_Type>
-    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, mvector>::type operator*(const Multiplier_Type &num) {
+    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, mvector>::type
+    operator*(const Multiplier_Type &num) {
         return static_cast<mvector>(Matrix_Type::operator*(num));
     }
 
@@ -94,7 +95,8 @@ public:
      * @return 除法运算结果
      */
     template<typename Multiplier_Type>
-    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, mvector>::type operator/(const Multiplier_Type &num) {
+    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, mvector>::type
+    operator/(const Multiplier_Type &num) {
         return static_cast<mvector>(Matrix_Type::operator/(num));
     }
 
@@ -103,12 +105,13 @@ public:
         Matrix_Type::operator/=(num);
     }
 
-    mvector operator/(const mvector another) {
-        return (mvector) Matrix_Type::operator/(another);
+
+    bool operator==(const mvector rhs) {
+        return Matrix_Type::operator==(rhs);
     }
 
-    mvector operator/=(const mvector another) {
-        return (mvector) Matrix_Type::operator/=(another);
+    bool operator!=(const mvector rhs) {
+        return Matrix_Type::operator!=(rhs);
     }
 
     /**
@@ -194,8 +197,8 @@ auto cross(const mvector<Data_Type, 2> &v1, const mvector<Data_Type, 2> &v2) {
 template<typename Data_Type>
 auto cross(const mvector<Data_Type, 3> &v1, const mvector<Data_Type, 3> &v2) {
     return mvector<Data_Type, 3>{v1[1] * v2[2] - v1[2] * v2[1],
-                                v1[2] * v2[0] - v1[0] * v2[2],
-                                v1[0] * v2[1] - v1[1] * v2[0]};
+                                 v1[2] * v2[0] - v1[0] * v2[2],
+                                 v1[0] * v2[1] - v1[1] * v2[0]};
 }
 
 

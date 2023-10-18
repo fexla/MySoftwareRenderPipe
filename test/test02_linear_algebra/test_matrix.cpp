@@ -47,4 +47,8 @@ int main() {
     std::cout << m3;
     std::cout << "×ªÖÃ=>" << std::endl;
     std::cout << m3.transpose();
+
+    std::cout << "¾ØÕóÏàµÈ£º" << std::endl;
+    std::cout << m3 << "==\n" << m3 << "=\n" << (m3 == m3) << std::endl;
+    std::cout << m3 << "!=\n" << m3 << "=\n" << (m3 != m3) << std::endl;
 }
