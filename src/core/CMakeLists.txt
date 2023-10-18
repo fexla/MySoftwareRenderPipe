@@ -1,6 +1,5 @@
 add_library(renderer_core STATIC
         Transform.h
-        ViewPoint.h
 )
 
 set_target_properties(renderer_core PROPERTIES LINKER_LANGUAGE CXX)
