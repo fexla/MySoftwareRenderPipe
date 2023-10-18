@@ -132,13 +132,14 @@ public:
     }
 
     template<typename Multiplier_Type>
-    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, void>::type
+    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, Matrix &>::type
     operator*=(const Multiplier_Type &num) {
         for (int i = 0; i < M; ++i) {
             for (int j = 0; j < N; ++j) {
                 data[i][j] *= num;
             }
         }
+        return *this;
     }
 
     /**
@@ -165,7 +166,8 @@ public:
     }
 
     template<typename Multiplier_Type>
-    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, void>::type operator/=(const Multiplier_Type &num) {
+    typename std::enable_if<std::is_arithmetic_v<Multiplier_Type>, Matrix &>::type
+    operator/=(const Multiplier_Type &num) {
         assert(num != 0);
         if constexpr (std::is_floating_point_v<Multiplier_Type>) {
             Multiplier_Type inv = 1 / num;
@@ -177,6 +179,7 @@ public:
                 }
             }
         }
+        return *this;
     }
 
     template<typename Multiplier_Type>

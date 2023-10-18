@@ -33,14 +33,14 @@ int main() {
 
     std::cout << "¾ØÕó³ËÊı×Ö£º" << std::endl;
     std::cout << m3 << "*3=\n" << (m3 * 3) << std::endl;
-    std::cout << m3 << "*=3\t=>\n" << ((m3 *= 3), m3) << std::endl;
+    std::cout << m3 << "*=3\t=>\n" << (m3 *= 3) << std::endl;
     m3 = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     std::cout << "3*\n" << m3 << "=\n" << (3 * m3) << std::endl;
     std::cout << m3 << "/3=\n" << (m3 / 3) << std::endl;
-    std::cout << m3 << "/=3\t=>\n" << ((m3 /= 3), m3) << std::endl;
+    std::cout << m3 << "/=3\t=>\n" << (m3 /= 3) << std::endl;
     m3 = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     std::cout << m3 << "/3.0=\n" << (m3 / 3.0) << std::endl;
-    std::cout << m3 << "/=3.0\t=>\n" << ((m3 /= 3.0), m3) << std::endl;
+    std::cout << m3 << "/=3.0\t=>\n" << (m3 /= 3.0) << std::endl;
     m3 = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
     std::cout << "¾ØÕó×ªÖÃ£º" << std::endl;
