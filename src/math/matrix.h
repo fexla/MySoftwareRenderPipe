@@ -47,11 +47,11 @@ public:
     matrix(matrix &&) = default;
 
 
-    auto operator[](const size_t &x){
+    auto operator[](const size_t &x) {
         return data[x];
     }
 
-    auto operator[](const size_t &x) const{
+    auto operator[](const size_t &x) const {
         return data[x];
     }
 
