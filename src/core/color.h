@@ -44,6 +44,30 @@ public:
         return *this;
     }
 
+    color operator*(const float &rhs) const {
+        return color{r * rhs, g * rhs, b * rhs, a * rhs};
+    }
+
+    color &operator*=(const float &rhs) {
+        r *= rhs;
+        g *= rhs;
+        b *= rhs;
+        a *= rhs;
+        return *this;
+    }
+
+    color operator/(const float &rhs) const {
+        return color{r / rhs, g / rhs, b / rhs, a / rhs};
+    }
+
+    color &operator/=(const float &rhs) {
+        r /= rhs;
+        g /= rhs;
+        b /= rhs;
+        a /= rhs;
+        return *this;
+    }
+
     float &operator[](int i) {
         return *(&r + i);
     }
