@@ -85,6 +85,20 @@ rasterize_line(GraphicsBuffer *buffer,
     }
 }
 
+template<typename GraphicsBuffer, typename VertexData, typename Shader>
+void shadePointInTriangle(GraphicsBuffer *buffer,
+                          const VertexData *vertexBuffer[3],
+                          Vector3f vertexPos[3],
+                          Shader &shader,
+                          Vector2f pos) {
+    auto [alpha, beta, gamma] = barycentric_coordinates2d(pos, {
+            Vector2f{vertexPos[0][0], vertexPos[0][1]},
+            Vector2f{vertexPos[1][0], vertexPos[1][1]},
+            Vector2f{vertexPos[2][0], vertexPos[2][1]},
+    });
+    (*buffer)[(int) pos[0]][(int) pos[1]] = shader.shade(vertexBuffer, alpha, beta, gamma);
+}
+
 /**
  * 光栅化三角形
  * @tparam GraphicsBuffer 画布类型
@@ -119,7 +133,8 @@ rasterize_triangle(GraphicsBuffer *buffer,
         float left = std::min(std::min(bottom[0], midL[0]), top[0]);
         float right = std::max(std::max(bottom[0], midL[0]), top[0]);
         for (int i = left; i <= right; ++i) {
-            (*buffer)[i][(int) top[1]] = shader.shade(vertexBuffer, 0, 0, 0);
+//            (*buffer)[i][(int) top[1]] = shader.shade(vertexBuffer, 0, 0, 0);
+            shadePointInTriangle(buffer, vertexBuffer, vertexPos, shader, {(float) i, top[1]});
         }
         return;
     }
@@ -132,7 +147,8 @@ rasterize_triangle(GraphicsBuffer *buffer,
         float left = std::min(std::min(bottom[0], midL[0]), midR[0]);
         float right = std::max(std::max(bottom[0], midL[0]), midR[0]);
         for (int i = left; i <= right; ++i) {
-            (*buffer)[i][(int) midL[1]] = shader.shade(vertexBuffer, 0, 0, 0);
+//            (*buffer)[i][(int) midL[1]] = shader.shade(vertexBuffer, 0, 0, 0);
+            shadePointInTriangle(buffer, vertexBuffer, vertexPos, shader, {(float) i, midL[1]});
         }
     } else {
         float kBottomMidLInv = 1.0 * (midL[0] - bottom[0]) / (midL[1] - bottom[1]);
@@ -141,7 +157,8 @@ rasterize_triangle(GraphicsBuffer *buffer,
             float left = bottom[0] + kBottomMidLInv * y + 0.5,
                     right = bottom[0] + kBottomMidRInv * y + 0.5;
             for (int x = left; x <= right; ++x) {
-                (*buffer)[x][(int) (bottom[1] + y)] = shader.shade(vertexBuffer, 0, 0, 0);
+//                (*buffer)[x][(int) (bottom[1] + y)] = shader.shade(vertexBuffer, 0, 0, 0);
+                shadePointInTriangle(buffer, vertexBuffer, vertexPos, shader, {x, bottom[1] + y});
             }
         }
     }
@@ -158,7 +175,8 @@ rasterize_triangle(GraphicsBuffer *buffer,
             float left = top[0] - kTopMidLInv * y + 0.5,
                     right = top[0] - kTopMidRInv * y + 0.5;
             for (int x = left; x <= right; ++x) {
-                (*buffer)[x][(int) (top[1] - y)] = shader.shade(vertexBuffer, 0, 0, 0);
+//                (*buffer)[x][(int) (top[1] - y)] = shader.shade(vertexBuffer, 0, 0, 0);
+                shadePointInTriangle(buffer, vertexBuffer, vertexPos, shader, {x, top[1] - y});
             }
         }
     }
