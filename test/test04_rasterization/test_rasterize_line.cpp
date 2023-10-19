@@ -55,25 +55,25 @@ int main(void) {
     line_frag_shader<color> shader;
     shader_lerp_color shader_lerp;
 
-    rasterize_line(a, Vector2i{W / 2 - 40 - 100, H / 2 + 100}, Vector2i{W / 2 + 40 - 100, H / 2 + 100},
+    rasterize_line(a, {W / 2 - 40 - 100, H / 2 + 100}, {W / 2 + 40 - 100, H / 2 + 100},
                    &C_WHITE, &C_BLACK, shader);
-    rasterize_line(a, Vector2i{W / 2 - 100, H / 2 - 40 + 100}, Vector2i{W / 2 - 100, H / 2 + 40 + 100},
+    rasterize_line(a, {W / 2 - 100, H / 2 - 40 + 100}, {W / 2 - 100, H / 2 + 40 + 100},
                    &C_WHITE, &C_BLACK, shader);
-    rasterize_line(a, Vector2i{W / 2 - 40 - 100, H / 2 - 40}, Vector2i{W / 2 + 40 - 100, H / 2 + 40},
+    rasterize_line(a, {W / 2 - 40 - 100, H / 2 - 40}, {W / 2 + 40 - 100, H / 2 + 40},
                    &C_WHITE, &C_BLACK, shader);
-    rasterize_line(a, Vector2i{W / 2 - 40 - 100, H / 2 + 40}, Vector2i{W / 2 + 40 - 100, H / 2 - 40},
+    rasterize_line(a, {W / 2 - 40 - 100, H / 2 + 40}, {W / 2 + 40 - 100, H / 2 - 40},
                    &C_WHITE, &C_BLACK, shader);
-    rasterize_line(a, Vector2i{W / 2 - 40 - 100, H / 2 - 60 - 100}, Vector2i{W / 2 + 40 - 100, H / 2 + 60 - 100},
+    rasterize_line(a, {W / 2 - 40 - 100, H / 2 - 60 - 100}, {W / 2 + 40 - 100, H / 2 + 60 - 100},
                    &C_WHITE, &C_BLACK, shader);
-    rasterize_line(a, Vector2i{W / 2 - 40 - 100, H / 2 + 60 - 100}, Vector2i{W / 2 + 40 - 100, H / 2 - 60 - 100},
+    rasterize_line(a, {W / 2 - 40 - 100, H / 2 + 60 - 100}, {W / 2 + 40 - 100, H / 2 - 60 - 100},
                    &C_WHITE, &C_BLACK, shader);
 
     int pointNum = 50;
     float lineLen = 80;
     for (int i = 0; i < pointNum; ++i) {
         float angle = 1.0 * i / pointNum * M_PI * 2;
-        Vector2i pos{(int) (W / 2 + 100 + lineLen * cos(angle)),
-                     (int) (H / 2 + lineLen * sin(angle))};
+        Vector3f pos{(W / 2 + 100 + lineLen * cos(angle)),
+                     (H / 2 + lineLen * sin(angle))};
         rasterize_line(a, {W / 2 + 100, H / 2}, pos, &C_RED, &C_Blue, shader_lerp);
     }
 

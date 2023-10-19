@@ -11,9 +11,9 @@
 template<typename GraphicsBuffer, typename Shader=point_shader>
 inline std::enable_if_t<std::is_base_of_v<point_shader, Shader>, void>
 rasterize_point(GraphicsBuffer *buffer,
-                Vector2i pos,
+                Vector3f pos,
                 Shader &shader) {
-    (*buffer)[pos[0]][pos[1]] = shader.shade();
+    (*buffer)[(int) (pos[0] + 0.5)][int(pos[1] + 0.5)] = shader.shade();
 }
 
 /**
@@ -22,8 +22,8 @@ rasterize_point(GraphicsBuffer *buffer,
  * @tparam VertexData 顶点数据类型
  * @tparam Shader 着色器
  * @param buffer 画布
- * @param start 起点坐标
- * @param end 终点坐标
+ * @param start 起点坐标（z分量为深度值）
+ * @param end 终点坐标（z分量为深度值）
  * @param v1Data 起点数据
  * @param v2Data 终点数据
  * @param shader 着色器
@@ -32,13 +32,13 @@ rasterize_point(GraphicsBuffer *buffer,
 template<typename GraphicsBuffer, typename VertexData, typename Shader>
 std::enable_if_t<std::is_base_of_v<line_frag_shader<VertexData>, Shader>, void>
 rasterize_line(GraphicsBuffer *buffer,
-               Vector2i start,
-               Vector2i end,
+               Vector3f start,
+               Vector3f end,
                const VertexData *v1Data,
                const VertexData *v2Data,
                Shader &shader) {
     if (start == end) {
-        (*buffer)[start[0]][start[1]] = shader.shade(v1Data, v2Data, 1);
+        (*buffer)[(int) (start[0] + 0.5)][(int) (start[1] + 0.5)] = shader.shade(v1Data, v2Data, 1);
         return;
     }
     //计算起点终点在x轴和y轴上的距离
@@ -56,7 +56,7 @@ rasterize_line(GraphicsBuffer *buffer,
         float xDiffInv = 1.0 / xDiff;
         for (int i = 0; i <= xDiff; ++i) {
             int y = start[1] + i * k + 0.5;
-            (*buffer)[start[0] + i][y] = shader.shade(v1Data, v2Data, t);
+            (*buffer)[(int) (start[0] + i)][y] = shader.shade(v1Data, v2Data, t);
             if (bFlip) {
                 t -= xDiffInv;
             } else {
@@ -75,7 +75,7 @@ rasterize_line(GraphicsBuffer *buffer,
         float yDiffInv = 1.0 / yDiff;
         for (int i = 0; i <= yDiff; ++i) {
             int x = start[0] + i * k + 0.5;
-            (*buffer)[x][start[1] + i] = shader.shade(v1Data, v2Data, t);
+            (*buffer)[x][(int) (start[1] + i)] = shader.shade(v1Data, v2Data, t);
             if (bFlip) {
                 t -= yDiffInv;
             } else {
@@ -85,16 +85,26 @@ rasterize_line(GraphicsBuffer *buffer,
     }
 }
 
-
+/**
+ * 光栅化三角形
+ * @tparam GraphicsBuffer 画布类型
+ * @tparam VertexData 顶点数据类型
+ * @tparam Shader 着色器
+ * @param buffer 画布
+ * @param vertexBuffer 顶点数据
+ * @param vertexPos 顶点位置（z分量为深度值）
+ * @param shader 着色器
+ * @return
+ */
 template<typename GraphicsBuffer, typename VertexData, typename Shader>
 std::enable_if_t<std::is_base_of_v<frag_shader<VertexData>, Shader>, void>
 rasterize_triangle(GraphicsBuffer *buffer,
                    const VertexData *vertexBuffer[3],
-                   Vector2i vertexPos[3],
+                   Vector3f vertexPos[3],
                    Shader &shader) {
-    Vector2f bottom = {static_cast<float>(vertexPos[0][0]), static_cast<float>(vertexPos[0][1])},
-            top = {static_cast<float>(vertexPos[1][0]), static_cast<float>(vertexPos[1][1])},
-            midL = {static_cast<float>(vertexPos[2][0]), static_cast<float>(vertexPos[2][1])},
+    Vector3f bottom = {vertexPos[0][0], vertexPos[0][1]},
+            top = {vertexPos[1][0], vertexPos[1][1]},
+            midL = {vertexPos[2][0], vertexPos[2][1]},
             midR;
     if (midL[1] > top[1]) {
         std::swap(midL, top);

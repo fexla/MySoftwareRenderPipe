@@ -43,7 +43,7 @@ int main(void) {
     auto a = new matrix<color, W, H>;
     point_shader shader;
     for (int i = -90; i < 91; i += 4) {
-        rasterize_point(a, {W / 2 + i, H / 2}, shader);
+        rasterize_point(a, {static_cast<float>(W / 2 + i), H / 2}, shader);
     }
 
     /* Loop until the user closes the window */

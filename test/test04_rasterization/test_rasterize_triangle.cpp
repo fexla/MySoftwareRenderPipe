@@ -47,14 +47,14 @@ int main(void) {
     std::mt19937_64 rngl;
     for (int c_x = 0; c_x < W / cellSize; ++c_x) {
         for (int c_y = 0; c_y < H / cellSize; ++c_y) {
-            Vector2i vertexPos[3]{
-                    Vector2i{(int) (rngl() % cellSize), (int) (rngl() % cellSize)},
-                    Vector2i{(int) (rngl() % cellSize), (int) (rngl() % cellSize)},
-                    Vector2i{(int) (rngl() % cellSize), (int) (rngl() % cellSize)}
+            Vector3f vertexPos[3]{
+                    Vector3f{0.f + (rngl() % cellSize), 0.f + (rngl() % cellSize)},
+                    Vector3f{0.f + (rngl() % cellSize), 0.f + (rngl() % cellSize)},
+                    Vector3f{0.f + (rngl() % cellSize), 0.f + (rngl() % cellSize)}
             };
             std::cout << "draw " << vertexPos[0] << '\t' << vertexPos[1] << '\t' << vertexPos[2] << '\n';
             for (int i = 0; i < 3; ++i) {
-                vertexPos[i] += {c_x * cellSize, c_y * cellSize};
+                vertexPos[i] += {static_cast<float>(c_x * cellSize), static_cast<float>(c_y * cellSize), 0};
             }
             rasterize_triangle(a, vertexBuffer, vertexPos, shader);
         }
