@@ -3,6 +3,7 @@
 //
 #include "rotation.h"
 #include "iostream"
+#include "rm_type_names.h"
 
 
 int main() {
