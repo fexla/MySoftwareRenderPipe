@@ -23,7 +23,7 @@ class line_frag_shader {
 public:
     ~line_frag_shader() = default;
 
-    color shade(VertexData *v1, VertexData *v2, float t) {
+    color shade(const VertexData *v1, const VertexData *v2, float t) {
         return C_WHITE;
     }
 
