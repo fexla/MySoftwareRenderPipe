@@ -3,6 +3,7 @@ add_library(renderer_math STATIC
         mvector.h
         renderer_math.h
         rotation.h
+        barycentric_coordinates.h
         rm_type_names.h)
 
 set_target_properties(renderer_math PROPERTIES LINKER_LANGUAGE CXX)
