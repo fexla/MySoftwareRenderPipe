@@ -20,8 +20,6 @@ public:
 
     color &operator=(color &&c) = default;
 
-    color(float r, float g, float b, float a) : r(r), g(g), b(b), a(a) {}
-
     color operator+(const color &rhs) const {
         return color{r + rhs.r, g + rhs.g, b + rhs.b, a + rhs.a};
     }
@@ -54,7 +52,6 @@ public:
         return *(&r + i);
     }
 
-private:
     float r, g, b, a;
 };
 
