@@ -29,4 +29,18 @@ public:
 
 };
 
+template<typename VertexData>
+class frag_shader {
+public:
+    ~frag_shader() = default;
+
+    color shade(const VertexData *vertexBuffer[3],
+                float alpha,
+                float beta,
+                float gamma) {
+        return C_WHITE;
+    }
+
+};
+
 #endif //MYSOFTWARERENDERPIPE_SHADER_H

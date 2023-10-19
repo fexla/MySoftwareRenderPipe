@@ -28,3 +28,18 @@ target_link_libraries(test04_1 PUBLIC
         renderer_core
 )
 
+add_executable(test04_2 test_rasterize_triangle.cpp)
+
+target_include_directories(test04_2 PUBLIC
+        ${EXTERNAL}/glfw/include
+)
+
+target_link_libraries(test04_2 PUBLIC
+        OpenGL32
+        ${EXTERNAL}/glfw/lib-mingw-w64/glfw3.dll
+        ${EXTERNAL}/glfw/lib-mingw-w64/libglfw3.a
+        ${EXTERNAL}/glfw/lib-mingw-w64/libglfw3dll.a
+        renderer_math
+        renderer_core
+)
+

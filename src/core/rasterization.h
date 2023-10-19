@@ -84,4 +84,74 @@ rasterize_line(GraphicsBuffer *buffer,
         }
     }
 }
+
+
+template<typename GraphicsBuffer, typename VertexData, typename Shader>
+std::enable_if_t<std::is_base_of_v<frag_shader<VertexData>, Shader>, void>
+rasterize_triangle(GraphicsBuffer *buffer,
+                   const VertexData *vertexBuffer[3],
+                   Vector2i vertexPos[3],
+                   Shader &shader) {
+    Vector2f bottom = {static_cast<float>(vertexPos[0][0]), static_cast<float>(vertexPos[0][1])},
+            top = {static_cast<float>(vertexPos[1][0]), static_cast<float>(vertexPos[1][1])},
+            midL = {static_cast<float>(vertexPos[2][0]), static_cast<float>(vertexPos[2][1])},
+            midR;
+    if (midL[1] > top[1]) {
+        std::swap(midL, top);
+    }
+    if (bottom[1] > midL[1]) {
+        std::swap(midL, bottom);
+    }
+    if (midL[1] > top[1]) {
+        std::swap(midL, top);
+    }
+    if (top[1] == bottom[1]) {
+        float left = std::min(std::min(bottom[0], midL[0]), top[0]);
+        float right = std::max(std::max(bottom[0], midL[0]), top[0]);
+        for (int i = left; i <= right; ++i) {
+            (*buffer)[i][(int) top[1]] = shader.shade(vertexBuffer, 0, 0, 0);
+        }
+        return;
+    }
+    float kBottomTop = 1.0 * (top[1] - bottom[1]) / (top[0] - bottom[0]);
+    midR = {bottom[0] + (midL[1] - bottom[1]) / kBottomTop, midL[1]};
+    if (midR[0] < midL[0]) {
+        std::swap(midR, midL);
+    }
+    if (midL[1] == bottom[1]) {
+        float left = std::min(std::min(bottom[0], midL[0]), midR[0]);
+        float right = std::max(std::max(bottom[0], midL[0]), midR[0]);
+        for (int i = left; i <= right; ++i) {
+            (*buffer)[i][(int) midL[1]] = shader.shade(vertexBuffer, 0, 0, 0);
+        }
+    } else {
+        float kBottomMidLInv = 1.0 * (midL[0] - bottom[0]) / (midL[1] - bottom[1]);
+        float kBottomMidRInv = 1.0 * (midR[0] - bottom[0]) / (midR[1] - bottom[1]);
+        for (int y = 0; y <= midL[1] - bottom[1]; ++y) {
+            float left = bottom[0] + kBottomMidLInv * y + 0.5,
+                    right = bottom[0] + kBottomMidRInv * y + 0.5;
+            for (int x = left; x <= right; ++x) {
+                (*buffer)[x][(int) (bottom[1] + y)] = shader.shade(vertexBuffer, 0, 0, 0);
+            }
+        }
+    }
+    if (top[1] == bottom[1]) {
+        float left = std::min(std::min(top[0], midL[0]), midR[0]);
+        float right = std::max(std::max(top[0], midL[0]), midR[0]);
+        for (int i = left; i <= right; ++i) {
+            (*buffer)[i][(int) midL[1]] = shader.shade(vertexBuffer, 0, 0, 0);
+        }
+    } else {
+        float kTopMidLInv = 1.0 * (midL[0] - top[0]) / (midL[1] - top[1]);
+        float kTopMidRInv = 1.0 * (midR[0] - top[0]) / (midR[1] - top[1]);
+        for (int y = 0; y <= top[1] - midL[1]; ++y) {
+            float left = top[0] - kTopMidLInv * y + 0.5,
+                    right = top[0] - kTopMidRInv * y + 0.5;
+            for (int x = left; x <= right; ++x) {
+                (*buffer)[x][(int) (top[1] - y)] = shader.shade(vertexBuffer, 0, 0, 0);
+            }
+        }
+    }
+}
+
 #endif //MYSOFTWARERENDERPIPE_RASTERIZATION_H
