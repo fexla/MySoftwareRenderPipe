@@ -10,9 +10,9 @@
 
 class point_shader {
 public:
-    virtual ~point_shader() = default;
+    ~point_shader() = default;
 
-    virtual color shade() {
+    color shade() {
         return C_WHITE;
     }
 
@@ -21,9 +21,9 @@ public:
 template<typename VertexData>
 class line_frag_shader {
 public:
-    virtual ~line_frag_shader() = default;
+    ~line_frag_shader() = default;
 
-    virtual color shade(VertexData *v1, VertexData *v2, float t) {
+    color shade(VertexData *v1, VertexData *v2, float t) {
         return C_WHITE;
     }
 
