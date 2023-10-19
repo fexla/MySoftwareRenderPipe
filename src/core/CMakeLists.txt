@@ -1,6 +1,7 @@
 add_library(renderer_core STATIC
         transform.h
         transform.cpp
+        shader.h
         color.h
 )
 
