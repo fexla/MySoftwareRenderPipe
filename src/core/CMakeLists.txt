@@ -5,6 +5,7 @@ add_library(renderer_core STATIC
         shader.h
         color.h
         texture.h
+        model.h
         camera.h
         buffer.h
 )
