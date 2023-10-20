@@ -4,7 +4,7 @@
 #include "GLFW/glfw3.h"
 #include "renderer_math.h"
 #include "color.h"
-#include "rasterization.h"
+#include "renderer.h"
 
 const int W = 640;
 const int H = 480;
