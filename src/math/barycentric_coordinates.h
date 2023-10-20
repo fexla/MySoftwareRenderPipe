@@ -10,7 +10,7 @@
 
 using std::array;
 
-array<float, 3> barycentric_coordinates2d(Vector2f pos, array<Vector2f, 3> triangle) {
+inline array<float, 3> barycentric_coordinates2d(Vector2f pos, array<Vector2f, 3> triangle) {
     float beta, gamma;
     beta = ((pos[1] - triangle[0][1]) * (triangle[2][0] - triangle[0][0]) -
             (pos[0] - triangle[0][0]) * (triangle[2][1] - triangle[0][1])) /
