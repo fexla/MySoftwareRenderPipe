@@ -4,6 +4,7 @@ add_library(renderer_core STATIC
         rasterization.h
         shader.h
         color.h
+        texture.h
 )
 
 set_target_properties(renderer_core PROPERTIES LINKER_LANGUAGE CXX)
