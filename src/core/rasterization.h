@@ -158,7 +158,7 @@ rasterize_triangle(GraphicsBuffer *buffer,
                     right = bottom[0] + kBottomMidRInv * y + 0.5;
             for (int x = left; x <= right; ++x) {
 //                (*buffer)[x][(int) (bottom[1] + y)] = shader.shade(vertexBuffer, 0, 0, 0);
-                shadePointInTriangle(buffer, vertexBuffer, vertexPos, shader, {x, bottom[1] + y});
+                shadePointInTriangle(buffer, vertexBuffer, vertexPos, shader, {(float)x, (float)bottom[1] + y});
             }
         }
     }
@@ -176,7 +176,7 @@ rasterize_triangle(GraphicsBuffer *buffer,
                     right = top[0] - kTopMidRInv * y + 0.5;
             for (int x = left; x <= right; ++x) {
 //                (*buffer)[x][(int) (top[1] - y)] = shader.shade(vertexBuffer, 0, 0, 0);
-                shadePointInTriangle(buffer, vertexBuffer, vertexPos, shader, {x, top[1] - y});
+                shadePointInTriangle(buffer, vertexBuffer, vertexPos, shader, {(float)x, (float)top[1] - y});
             }
         }
     }
