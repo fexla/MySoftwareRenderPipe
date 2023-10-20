@@ -6,3 +6,5 @@ add_subdirectory(test04_rasterization)
 add_subdirectory(test05_barycentric_coordinates)
 add_subdirectory(test06_clip)
 add_subdirectory(test07_test_obj_loader)
+add_subdirectory(test08_opencv)
+
