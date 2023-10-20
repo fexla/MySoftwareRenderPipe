@@ -10,6 +10,10 @@
 
 class transform {
 public:
+    transform() : position{0}, rotation{0} {}
+
+    transform(const Vector3f &position, const EulerAngle &rotation) : position(position), rotation(rotation) {}
+
     Vector3f position;
     EulerAngle rotation;
 };
