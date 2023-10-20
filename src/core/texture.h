@@ -21,6 +21,12 @@ public:
     }
 
     void loadFromFile(const std::string &name) {
+        if (name.empty()) {
+            width = 0;
+            height = 0;
+            image_data.resize(0, 0);
+            return;
+        }
         image_data = cv::imread(name, cv::IMREAD_UNCHANGED);
         cv::cvtColor(image_data, image_data, cv::COLOR_BGRA2RGBA);
         width = image_data.cols;
