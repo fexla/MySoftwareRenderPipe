@@ -32,8 +32,10 @@ void renderer::render() {
                     modelData.texcoord,
                     -viewPos[2]};
         }
-
+        auto dir2world = obj.objTransform.rotation.rotationMatrix3x3();
         //光栅化
+        obj.objMaterial->obj2world = &model_mat;
+        obj.objMaterial->dir2world = &dir2world;
         obj.objMaterial->renderTarget(renderBuffer, model, vData);
     }
 }

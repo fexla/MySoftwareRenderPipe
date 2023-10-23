@@ -25,6 +25,9 @@ using DefVtxDataInPip = vertex_wpos_cpos_norm_uv_dep;
 class material {
 public:
     virtual void renderTarget(buffer2d<color> &, model &, std::vector<DefVtxDataInPip> &) const;
+
+    mutable Matrix4x4 *obj2world;
+    mutable Matrix3x3 *dir2world;
 };
 
 const material DEFAULT_MATERIAL{};
