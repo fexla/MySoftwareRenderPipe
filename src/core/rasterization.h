@@ -91,14 +91,15 @@ void shadePointInTriangle(GraphicsBuffer *buffer,
                           const VertexData *vertexBuffer[3],
                           Vector3f vertexPos[3],
                           Shader &shader,
-                          Vector2f pos) {
-    auto [alpha, beta, gamma] = barycentric_coordinates2d(pos, {
+                          Vector2f realPos,
+                          Vector2i pixelPos) {
+    auto [alpha, beta, gamma] = barycentric_coordinates2d(realPos, {
             Vector2f{vertexPos[0][0], vertexPos[0][1]},
             Vector2f{vertexPos[1][0], vertexPos[1][1]},
             Vector2f{vertexPos[2][0], vertexPos[2][1]},
     });
-    unsigned int x = pos[0];
-    unsigned int y = pos[1];
+    unsigned int x = pixelPos[0];
+    unsigned int y = pixelPos[1];
     if constexpr (std::is_base_of_v<buffer2d<color>, GraphicsBuffer>) {
         if (x >= buffer->getWidth() || y >= buffer->getHeight()) {
             return;
@@ -151,11 +152,6 @@ rasterize_triangle(GraphicsBuffer *buffer,
         std::swap(midL, top);
     }
     if (top[1] == bottom[1]) {
-        float left = std::min(std::min(bottom[0], midL[0]), top[0]);
-        float right = std::max(std::max(bottom[0], midL[0]), top[0]);
-        for (int i = left; i <= right; ++i) {
-            shadePointInTriangle(buffer, depthBuffer, vertexBuffer, vertexPos, shader, {(float) i, top[1]});
-        }
         return;
     }
     float kBottomTop = 1.0 * (top[1] - bottom[1]) / (top[0] - bottom[0]);
@@ -163,38 +159,46 @@ rasterize_triangle(GraphicsBuffer *buffer,
     if (midR[0] < midL[0]) {
         std::swap(midR, midL);
     }
-    if (midL[1] == bottom[1]) {
-        float left = std::min(std::min(bottom[0], midL[0]), midR[0]);
-        float right = std::max(std::max(bottom[0], midL[0]), midR[0]);
-        for (int i = left; i <= right; ++i) {
-            shadePointInTriangle(buffer, depthBuffer, vertexBuffer, vertexPos, shader, {(float) i, midL[1]});
-        }
-    } else {
+    if (midL[1] != bottom[1]) {
         float kBottomMidLInv = 1.0 * (midL[0] - bottom[0]) / (midL[1] - bottom[1]);
         float kBottomMidRInv = 1.0 * (midR[0] - bottom[0]) / (midR[1] - bottom[1]);
-        for (int y = 0; y <= midL[1] - bottom[1]; ++y) {
-            float left = bottom[0] + kBottomMidLInv * y + 0.5,
-                    right = bottom[0] + kBottomMidRInv * y + 0.5;
-            for (int x = left; x <= right; ++x) {
-                shadePointInTriangle(buffer, depthBuffer, vertexBuffer, vertexPos, shader, {(float) x, bottom[1] + y});
+        float curY, endY;
+        curY = floor(bottom[1] + 0.5) + 0.5;
+        endY = ceil(midL[1]- 0.5) + 0.5;
+        while (curY < endY) {
+            float deltaY = curY - bottom[1];
+            float left = bottom[0] + kBottomMidLInv * deltaY,
+                    right = bottom[0] + kBottomMidRInv * deltaY;
+            float curX, endX;
+            curX = floor(left + 0.5) + 0.5;
+            endX = ceil(right + 0.5) - 0.5;
+            while (curX < endX) {
+                shadePointInTriangle(buffer, depthBuffer, vertexBuffer, vertexPos, shader,
+                                     {curX, curY}, {curX, curY});
+                curX += 1;
             }
+            curY += 1;
         }
     }
-    if (top[1] == bottom[1]) {
-        float left = std::min(std::min(top[0], midL[0]), midR[0]);
-        float right = std::max(std::max(top[0], midL[0]), midR[0]);
-        for (int i = left; i <= right; ++i) {
-            (*buffer)[i][(int) midL[1]] = shader.shade(vertexBuffer, 0, 0, 0);
-        }
-    } else {
+    if (midL[1] != top[1]) {
         float kTopMidLInv = 1.0 * (midL[0] - top[0]) / (midL[1] - top[1]);
         float kTopMidRInv = 1.0 * (midR[0] - top[0]) / (midR[1] - top[1]);
-        for (int y = 0; y <= top[1] - midL[1]; ++y) {
-            float left = top[0] - kTopMidLInv * y + 0.5,
-                    right = top[0] - kTopMidRInv * y + 0.5;
-            for (int x = left; x <= right; ++x) {
-                shadePointInTriangle(buffer, depthBuffer, vertexBuffer, vertexPos, shader, {(float) x, top[1] - y});
+        float curY, endY;
+        curY = floor(midL[1] + 0.5) + 0.5;
+        endY = ceil(top[1] + 0.5) - 0.5;
+        while (curY <= endY) {
+            float deltaY = curY - top[1];
+            float left = top[0] + kTopMidLInv * deltaY,
+                    right = top[0] + kTopMidRInv * deltaY;
+            float curX, endX;
+            curX = floor(left + 0.5) + 0.5;
+            endX = ceil(right + 0.5) - 0.5;
+            while (curX < endX) {
+                shadePointInTriangle(buffer, depthBuffer, vertexBuffer, vertexPos, shader,
+                                     {curX, curY}, {curX, curY});
+                curX += 1;
             }
+            curY += 1;
         }
     }
 }
