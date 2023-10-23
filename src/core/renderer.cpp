@@ -15,7 +15,7 @@ void renderer::render() {
     for (int i = 0; i < objs.size(); ++i) {
         auto &obj = objs[i];
         auto &model = models[obj.modelId];
-        auto model_mat = getModelMatrix(obj.transform);
+        auto model_mat = getModelMatrix(obj.objTransform);
         std::vector<DefVtxDataInPip> vData{model.vertices.size()};
 
         //准备顶点
@@ -33,33 +33,11 @@ void renderer::render() {
                     clipPos,
                     modelData.norm,
                     modelData.texcoord,
-                    viewPos[2]};
+                    -viewPos[2]};
         }
 
         //光栅化
-        frag_shader<DefVtxDataInPip> shader;
-        for (int t = 0; t < model.triangles.size(); ++t) {
-            auto &triangle = model.triangles[t];
-            const DefVtxDataInPip *triangleVertexData[3]{
-                    &vData[triangle[0]],
-                    &vData[triangle[1]],
-                    &vData[triangle[2]],
-            };
-            Vector3f vertexScreenPos[3];
-            for (int j = 0; j < 3; ++j) {
-                vertexScreenPos[j] = {
-                        (vData[triangle[j]].clipPos[0] / 2 + 0.5f) * render_width,
-                        (vData[triangle[j]].clipPos[1] / 2 + 0.5f) * render_height,
-                        (vData[triangle[j]].clipPos[2]),
-                };
-            }
-            rasterize_triangle(
-                    &renderBuffer,
-                    triangleVertexData,
-                    vertexScreenPos,
-                    shader
-            );
-        }
+        obj.objMaterial->renderTarget(renderBuffer, model, vData);
     }
 }
 
@@ -74,4 +52,31 @@ renderer::renderer(int renderWidth, int renderHeight) :
 
 void renderer::addObj(const scene_obj &obj) {
     objs.push_back(obj);
+}
+
+void material::renderTarget(buffer2d<color> &renderBuffer, model &model, std::vector<DefVtxDataInPip> &vData) const {
+    //光栅化
+    frag_shader<DefVtxDataInPip> shader;
+    for (int t = 0; t < model.triangles.size(); ++t) {
+        auto &triangle = model.triangles[t];
+        const DefVtxDataInPip *triangleVertexData[3]{
+                &vData[triangle[0]],
+                &vData[triangle[1]],
+                &vData[triangle[2]],
+        };
+        Vector3f vertexScreenPos[3];
+        for (int j = 0; j < 3; ++j) {
+            vertexScreenPos[j] = {
+                    (vData[triangle[j]].clipPos[0] / 2 + 0.5f) * renderBuffer.getWidth(),
+                    (vData[triangle[j]].clipPos[1] / 2 + 0.5f) * renderBuffer.getHeight(),
+                    (vData[triangle[j]].clipPos[2]),
+            };
+        }
+        rasterize_triangle(
+                &renderBuffer,
+                triangleVertexData,
+                vertexScreenPos,
+                shader
+        );
+    }
 }

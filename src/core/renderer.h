@@ -11,11 +11,6 @@
 #include "buffer.h"
 #include "rasterization.h"
 
-struct scene_obj {
-    std::string modelId;
-    transform transform;
-};
-
 struct vertex_wpos_cpos_norm_uv_dep {
     Vector4f worldPos;
     Vector4f clipPos;
@@ -26,6 +21,25 @@ struct vertex_wpos_cpos_norm_uv_dep {
 
 //默认下渲染管线中的顶点数据类型
 using DefVtxDataInPip = vertex_wpos_cpos_norm_uv_dep;
+
+class material {
+public:
+    virtual void renderTarget(buffer2d<color> &, model &, std::vector<DefVtxDataInPip> &) const;
+};
+
+const material DEFAULT_MATERIAL{};
+
+struct scene_obj {
+    std::string modelId;
+    transform objTransform;
+    const material *objMaterial;
+
+    scene_obj(std::string modelId, const transform &objTransform) :
+            modelId(std::move(modelId)), objTransform(objTransform), objMaterial(&DEFAULT_MATERIAL) {}
+
+    scene_obj(std::string modelId, const transform &objTransform, material *objMaterial) :
+            modelId(std::move(modelId)), objTransform(objTransform), objMaterial(objMaterial) {}
+};
 
 class renderer {
 public:

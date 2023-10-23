@@ -83,9 +83,9 @@ int main(void) {
     while (!glfwWindowShouldClose(window)) {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
-        r.objs[0].transform.rotation.y += 0.1;
-//        if (r.objs[0].transform.position[1] > 5) {
-//            r.objs[0].transform.position[1] = -5;
+        r.objs[0].objTransform.rotation.y += 0.1;
+//        if (r.objs[0].objTransform.position[1] > 5) {
+//            r.objs[0].objTransform.position[1] = -5;
 //        }
         r.render();
         refresh(r.renderBuffer);
