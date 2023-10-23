@@ -2,14 +2,12 @@
 // Created by q on 2023/10/20.
 //
 
+#include <limits>
+
 #include "renderer.h"
 
 void renderer::render() {
-    for (int i = 0; i < render_width; ++i) {
-        for (int j = 0; j < render_height; ++j) {
-            renderBuffer[i][j] = C_BLACK;
-        }
-    }
+    refreshBuffer();
     auto view_mat = mainCamera.getViewMatrix();
     auto proj_mat = mainCamera.getPerspectiveProjectionMatrix();
     for (int i = 0; i < objs.size(); ++i) {
@@ -48,10 +46,20 @@ void renderer::addModel(const std::string &modelId, const model &&m) {
 renderer::renderer(int renderWidth, int renderHeight) :
         render_width(renderWidth),
         render_height(renderHeight),
-        renderBuffer(renderWidth, renderHeight) {}
+        renderBuffer(renderWidth, renderHeight),
+        depthBuffer(renderWidth, renderHeight) {}
 
 void renderer::addObj(const scene_obj &obj) {
     objs.push_back(obj);
+}
+
+void renderer::refreshBuffer() {
+    for (int i = 0; i < render_width; ++i) {
+        for (int j = 0; j < render_height; ++j) {
+            renderBuffer[i][j] = C_BLACK;
+            depthBuffer[i][j] = std::numeric_limits<float>::max();
+        }
+    }
 }
 
 void material::renderTarget(buffer2d<color> &renderBuffer, model &model, std::vector<DefVtxDataInPip> &vData) const {

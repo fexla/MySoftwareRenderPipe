@@ -85,8 +85,9 @@ rasterize_line(GraphicsBuffer *buffer,
     }
 }
 
-template<typename GraphicsBuffer, typename VertexData, typename Shader>
+template<typename GraphicsBuffer, typename DepthBuffer = void, typename VertexData, typename Shader>
 void shadePointInTriangle(GraphicsBuffer *buffer,
+                          DepthBuffer *depthBuffer,
                           const VertexData *vertexBuffer[3],
                           Vector3f vertexPos[3],
                           Shader &shader,
@@ -103,12 +104,24 @@ void shadePointInTriangle(GraphicsBuffer *buffer,
             return;
         }
     }
-    (*buffer)[x][y] = shader.shade(vertexBuffer, alpha, beta, gamma);
+    float depth = 1.f / (alpha / vertexPos[0][2] + beta / vertexPos[1][2] + gamma / vertexPos[2][2]);
+    if (depth >= 0) {
+        return;
+    }
+    if constexpr (!std::is_same_v<void, DepthBuffer>) {
+        if ((*depthBuffer)[x][y] > depth) {
+            (*buffer)[x][y] = shader.shade(vertexBuffer, alpha, beta, gamma);
+            (*depthBuffer)[x][y] = depth;
+        }
+    } else {
+        (*buffer)[x][y] = shader.shade(vertexBuffer, alpha, beta, gamma);
+    }
 }
 
 /**
  * 光栅化三角形
  * @tparam GraphicsBuffer 画布类型
+ * @tparam DepthBuffer 深度缓冲类型
  * @tparam VertexData 顶点数据类型
  * @tparam Shader 着色器
  * @param buffer 画布
@@ -117,9 +130,10 @@ void shadePointInTriangle(GraphicsBuffer *buffer,
  * @param shader 着色器
  * @return
  */
-template<typename GraphicsBuffer, typename VertexData, typename Shader>
+template<typename GraphicsBuffer, typename DepthBuffer = void, typename VertexData, typename Shader>
 std::enable_if_t<std::is_base_of_v<frag_shader<VertexData>, Shader>, void>
 rasterize_triangle(GraphicsBuffer *buffer,
+                   DepthBuffer *depthBuffer,
                    const VertexData *vertexBuffer[3],
                    Vector3f vertexPos[3],
                    Shader &shader) {
@@ -140,7 +154,7 @@ rasterize_triangle(GraphicsBuffer *buffer,
         float left = std::min(std::min(bottom[0], midL[0]), top[0]);
         float right = std::max(std::max(bottom[0], midL[0]), top[0]);
         for (int i = left; i <= right; ++i) {
-            shadePointInTriangle(buffer, vertexBuffer, vertexPos, shader, {(float) i, top[1]});
+            shadePointInTriangle(buffer, depthBuffer, vertexBuffer, vertexPos, shader, {(float) i, top[1]});
         }
         return;
     }
@@ -153,7 +167,7 @@ rasterize_triangle(GraphicsBuffer *buffer,
         float left = std::min(std::min(bottom[0], midL[0]), midR[0]);
         float right = std::max(std::max(bottom[0], midL[0]), midR[0]);
         for (int i = left; i <= right; ++i) {
-            shadePointInTriangle(buffer, vertexBuffer, vertexPos, shader, {(float) i, midL[1]});
+            shadePointInTriangle(buffer, depthBuffer, vertexBuffer, vertexPos, shader, {(float) i, midL[1]});
         }
     } else {
         float kBottomMidLInv = 1.0 * (midL[0] - bottom[0]) / (midL[1] - bottom[1]);
@@ -162,7 +176,7 @@ rasterize_triangle(GraphicsBuffer *buffer,
             float left = bottom[0] + kBottomMidLInv * y + 0.5,
                     right = bottom[0] + kBottomMidRInv * y + 0.5;
             for (int x = left; x <= right; ++x) {
-                shadePointInTriangle(buffer, vertexBuffer, vertexPos, shader, {(float) x, bottom[1] + y});
+                shadePointInTriangle(buffer, depthBuffer, vertexBuffer, vertexPos, shader, {(float) x, bottom[1] + y});
             }
         }
     }
@@ -179,10 +193,31 @@ rasterize_triangle(GraphicsBuffer *buffer,
             float left = top[0] - kTopMidLInv * y + 0.5,
                     right = top[0] - kTopMidRInv * y + 0.5;
             for (int x = left; x <= right; ++x) {
-                shadePointInTriangle(buffer, vertexBuffer, vertexPos, shader, {(float) x, top[1] - y});
+                shadePointInTriangle(buffer, depthBuffer, vertexBuffer, vertexPos, shader, {(float) x, top[1] - y});
             }
         }
     }
+}
+
+/**
+ * 光栅化三角形
+ * @tparam GraphicsBuffer 画布类型
+ * @tparam VertexData 顶点数据类型
+ * @tparam Shader 着色器
+ * @param buffer 画布
+ * @param vertexBuffer 顶点数据
+ * @param vertexPos 顶点位置（z分量为深度值）
+ * @param shader 着色器
+ * @return
+ */
+template<typename GraphicsBuffer, typename VertexData, typename Shader>
+std::enable_if_t<std::is_base_of_v<frag_shader<VertexData>, Shader>, void>
+rasterize_triangle(GraphicsBuffer *buffer,
+                   const VertexData *vertexBuffer[3],
+                   Vector3f vertexPos[3],
+                   Shader &shader) {
+    rasterize_triangle<GraphicsBuffer, void, VertexData, Shader>
+            (buffer, nullptr, vertexBuffer, vertexPos, shader);
 }
 
 #endif //MYSOFTWARERENDERPIPE_RASTERIZATION_H

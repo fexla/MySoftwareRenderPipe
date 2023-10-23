@@ -46,6 +46,10 @@ public:
     int render_width, render_height;
 
     buffer2d<color> renderBuffer;
+    buffer2d<float> depthBuffer;
+
+    std::map<std::string, model> models;
+    std::vector<scene_obj> objs;
 
     camera mainCamera;
 
@@ -53,12 +57,12 @@ public:
 
     void render();
 
+    void refreshBuffer();
+
     void addModel(const std::string &modelId, const model &&m);
 
     void addObj(const scene_obj &obj);
 
-    std::map<std::string, model> models;
-    std::vector<scene_obj> objs;
 };
 
 
