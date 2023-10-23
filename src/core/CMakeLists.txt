@@ -10,6 +10,8 @@ add_library(renderer_core STATIC
         model.h
         camera.h
         buffer.h
+        materials/material_with_depth.cpp
+        materials/material_with_depth.h
 )
 
 set_target_properties(renderer_core PROPERTIES LINKER_LANGUAGE CXX)

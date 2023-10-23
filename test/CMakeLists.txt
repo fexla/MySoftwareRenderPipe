@@ -7,5 +7,5 @@ add_subdirectory(test05_barycentric_coordinates)
 add_subdirectory(test06_clip)
 add_subdirectory(test07_test_obj_loader)
 add_subdirectory(test08_opencv)
-
 add_subdirectory(test09_pipeline)
+add_subdirectory(test10_depthTest)
