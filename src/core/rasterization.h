@@ -7,6 +7,7 @@
 
 #include "renderer_math.h"
 #include "shader.h"
+#include "utility.h"
 
 template<typename GraphicsBuffer, typename Shader=point_shader>
 inline std::enable_if_t<std::is_base_of_v<point_shader, Shader>, void>
@@ -138,10 +139,13 @@ rasterize_triangle(GraphicsBuffer *buffer,
                    const VertexData *vertexBuffer[3],
                    Vector3f vertexPos[3],
                    Shader &shader) {
-    Vector3f bottom = {vertexPos[0][0], vertexPos[0][1]},
+    Vector2f bottom = {vertexPos[0][0], vertexPos[0][1]},
             top = {vertexPos[1][0], vertexPos[1][1]},
             midL = {vertexPos[2][0], vertexPos[2][1]},
             midR;
+    if (isTriangleClockwise({bottom, top, midL})) {
+        return;
+    }
     if (midL[1] > top[1]) {
         std::swap(midL, top);
     }
@@ -164,7 +168,7 @@ rasterize_triangle(GraphicsBuffer *buffer,
         float kBottomMidRInv = 1.0 * (midR[0] - bottom[0]) / (midR[1] - bottom[1]);
         float curY, endY;
         curY = floor(bottom[1] + 0.5) + 0.5;
-        endY = ceil(midL[1]- 0.5) + 0.5;
+        endY = ceil(midL[1] - 0.5) + 0.5;
         while (curY < endY) {
             float deltaY = curY - bottom[1];
             float left = bottom[0] + kBottomMidLInv * deltaY,
