@@ -20,7 +20,6 @@ void renderer::render() {
         for (int v = 0; v < model.vertices.size(); ++v) {
             auto modelData = model.vertices[v];
             Vector4f pos = {modelData.pos[0], modelData.pos[1], modelData.pos[2], 1};
-            pos *= 60;
             pos[3] = 1;
             auto worldPos = model_mat * pos;
             auto viewPos = view_mat * worldPos;

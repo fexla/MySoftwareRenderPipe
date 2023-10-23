@@ -7,6 +7,13 @@ Matrix4x4 getModelMatrix(const transform &objectTransform) {
     auto &rotation = objectTransform.rotation;
     auto position = objectTransform.position;
     auto matrix = rotation.rotationMatrix();
+    Matrix4x4 scaleMat{
+            objectTransform.scale[0], 0, 0, 0,
+            0, objectTransform.scale[0], 0, 0,
+            0, 0, objectTransform.scale[0], 0,
+            0, 0, 0, 1
+    };
+    matrix = matrix * scaleMat;
     matrix[0][3] = position[0];
     matrix[1][3] = position[1];
     matrix[2][3] = position[2];

@@ -10,12 +10,17 @@
 
 class transform {
 public:
-    transform() : position{0}, rotation{0} {}
+    transform() : position{0}, rotation{0}, scale{1, 1, 1} {}
 
-    transform(const Vector3f &position, const EulerAngle &rotation) : position(position), rotation(rotation) {}
+    transform(const Vector3f &position, const EulerAngle &rotation) :
+            position(position), rotation(rotation), scale{1, 1, 1} {}
+
+    transform(const Vector3f &position, const Vector3f &scale, const EulerAngle &rotation) :
+            position(position), scale(scale), rotation(rotation) {}
 
     Vector3f position;
     EulerAngle rotation;
+    Vector3f scale;
 };
 
 Matrix4x4 getModelMatrix(const transform &objectTransform);
