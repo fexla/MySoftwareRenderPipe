@@ -12,6 +12,8 @@ add_library(renderer_core STATIC
         buffer.h
         materials/material_with_depth.cpp
         materials/material_with_depth.h
+        materials/material_texture.cpp
+        materials/material_texture.h
 )
 
 set_target_properties(renderer_core PROPERTIES LINKER_LANGUAGE CXX)
