@@ -41,3 +41,12 @@ Matrix4x4 getPerspectiveProjectionMatrix(float fov, float aspect, float far, flo
             0, 0, -1, 0
     };
 }
+
+Matrix4x4 getOrthogonalProjectionMatrix(float size, float aspect, float far, float near) {
+    return {
+            1 / (size * aspect), 0, 0, 0,
+            0, 1 / size, 0, 0,
+            0, 0, -2 / (far - near), -(far + near) / (far - near),
+            0, 0, 0, 1
+    };
+}

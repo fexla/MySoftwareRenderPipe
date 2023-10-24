@@ -10,7 +10,10 @@
 struct camera {
     transform trans;
     //fov in radius
-    float fov = 0.25 * M_PI;
+    union {
+        float fov = 0.25 * M_PI;
+        float size;
+    };
     float aspect = 1920.0 / 1080.0;
     float near = 0.01;
     float far = 100;
@@ -19,8 +22,12 @@ struct camera {
         return ::getViewMatrix(trans);
     }
 
-    auto getPerspectiveProjectionMatrix() {
+    auto getPerspectiveProjectionMatrix() const {
         return ::getPerspectiveProjectionMatrix(fov, aspect, far, near);
+    }
+
+    auto getOrthogonalProjectionMatrix() const {
+        return ::getOrthogonalProjectionMatrix(size, aspect, far, near);
     }
 };
 

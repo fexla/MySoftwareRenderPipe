@@ -29,4 +29,5 @@ Matrix4x4 getViewMatrix(const transform &cameraTransform);
 
 Matrix4x4 getPerspectiveProjectionMatrix(float fov, float aspect, float far, float near);
 
+Matrix4x4 getOrthogonalProjectionMatrix(float size, float aspect, float far, float near);
 #endif //MYSOFTWARERENDERPIPE_TRANSFORM_H
