@@ -6,6 +6,7 @@
 #define MYSOFTWARERENDERPIPE_MATERIAL_LAMBERT_H
 
 #include "vector"
+#include "memory"
 
 #include "buffer.h"
 #include "model.h"
@@ -17,7 +18,7 @@ class lambert_shader : public frag_shader<DefVtxDataInPip> {
 public:
     color shade(const DefVtxDataInPip *[3], float, float, float);
 
-    std::vector<direction_light> *directionLights;
+    std::vector<std::unique_ptr<direction_light>> *directionLights;
 
     Matrix3x3 *dir2world;
 };
@@ -25,8 +26,6 @@ public:
 class material_lambert : public material_with_depth {
 public:
     using material_with_depth::depthBuffer;
-
-    std::vector<direction_light> *directionLights;
 
     void renderTarget(buffer2d<color> &renderBuffer, model &model, std::vector<DefVtxDataInPip> &vector) const override;
 };

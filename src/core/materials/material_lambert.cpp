@@ -23,8 +23,8 @@ class color lambert_shader::shade(const DefVtxDataInPip *vertexBuffer[3],
     float intensity = 0.3;
     for (auto &l: *directionLights) {
         intensity +=
-                std::max(-dot(l.direction.normalize(), norm), 0.f) *
-                l.intensity;
+                std::max(-dot(l->direction.normalize(), norm), 0.f) *
+                l->intensity;
     }
     intensity = std::min(intensity, 1.f);
     return C_WHITE * intensity;

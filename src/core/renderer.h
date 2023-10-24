@@ -10,6 +10,7 @@
 #include "camera.h"
 #include "buffer.h"
 #include "rasterization.h"
+#include "light.h"
 
 struct vertex_wpos_cpos_norm_uv_dep {
     Vector4f worldPos;
@@ -28,6 +29,7 @@ public:
 
     mutable Matrix4x4 *obj2world;
     mutable Matrix3x3 *dir2world;
+    mutable std::vector<std::unique_ptr<direction_light>> *directionLights;
 };
 
 const material DEFAULT_MATERIAL{};
@@ -53,6 +55,7 @@ public:
 
     std::map<std::string, model> models;
     std::vector<scene_obj> objs;
+    std::vector<std::unique_ptr<direction_light>> directionLights;
 
     camera mainCamera;
 

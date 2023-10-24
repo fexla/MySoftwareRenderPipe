@@ -36,6 +36,7 @@ void renderer::render() {
         //光栅化
         obj.objMaterial->obj2world = &model_mat;
         obj.objMaterial->dir2world = &dir2world;
+        obj.objMaterial->directionLights = &directionLights;
         obj.objMaterial->renderTarget(renderBuffer, model, vData);
     }
 }

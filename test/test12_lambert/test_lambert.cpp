@@ -68,9 +68,10 @@ vector<std::pair<string, transform>> sceneObjects{
 };
 
 material_lambert material;
-std::vector<direction_light> lights{{Vector3f{-1, -1, -1}.normalize(), 0.8}};
+std::vector<std::unique_ptr<direction_light>> lights;
 
 void init(renderer &r) {
+    lights.emplace_back(new direction_light{Vector3f{-1, -1, -1}.normalize(), 0.8});
     transform camera = {{16,   15,              0},
                         {-0.5, 3.1415926 * 0.5, 0}};
     r.mainCamera = {camera};
@@ -82,7 +83,8 @@ void init(renderer &r) {
     for (auto [obj_id, obj_tran]: sceneObjects) {
         r.addObj({obj_id, obj_tran, &material});
     }
-    material.directionLights = &lights;
+//    material.directionLights = &directionLights;
+    r.directionLights = std::move(lights);
 }
 
 
