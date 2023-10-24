@@ -5,8 +5,14 @@
 #ifndef MYSOFTWARERENDERPIPE_BUFFER_H
 #define MYSOFTWARERENDERPIPE_BUFFER_H
 
-#include "vector"
 #include <cstddef>
+
+#include "vector"
+
+/**
+ * 二维缓存
+ * @tparam DataType 数据类型
+ */
 
 template<typename DataType>
 class buffer2d {
@@ -29,9 +35,6 @@ public:
     DataType *operator[](size_t i) {
         return &data[0] + i * height;
     }
-//    DataType &at(size_t x,size_t y) {
-//        return data[y*width+x];
-//    }
 
 private:
     unsigned int width, height;
