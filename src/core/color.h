@@ -79,9 +79,9 @@ public:
     float r, g, b, a;
 };
 
-const static color C_WHITE = {1, 1, 1, 1};
-const static color C_BLACK = {0, 0, 0, 1};
-const static color C_RED = {1, 0, 0, 1};
-const static color C_GREEN = {0, 1, 0, 1};
-const static color C_BLUE = {0, 0, 1, 1};
+constexpr color C_WHITE = {1, 1, 1, 1};
+constexpr color C_BLACK = {0, 0, 0, 1};
+constexpr color C_RED = {1, 0, 0, 1};
+constexpr color C_GREEN = {0, 1, 0, 1};
+constexpr color C_BLUE = {0, 0, 1, 1};
 #endif //MYSOFTWARERENDERPIPE_COLOR_H
