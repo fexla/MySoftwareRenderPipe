@@ -7,6 +7,9 @@
 
 #include "renderer_math.h"
 
+/**
+ * 平行光
+ */
 struct direction_light {
     Vector3f direction;
     float intensity;
