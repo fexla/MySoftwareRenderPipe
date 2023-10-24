@@ -73,7 +73,7 @@ std::vector<direction_light> lights{{Vector3f{-1, -1, -1}.normalize(), 0.8}};
 void init(renderer &r) {
     transform camera = {{16,   15,              0},
                         {-0.5, 3.1415926 * 0.5, 0}};
-    r.mainCamera = {camera};
+    r.mainCamera = {camera, ProjectionMode::Orthogonal};
     r.mainCamera.aspect = 1.0 * W / H;
     r.mainCamera.size = 5;
     material.depthBuffer = &r.depthBuffer;

@@ -7,8 +7,13 @@
 
 #include "transform.h"
 
+enum class ProjectionMode {
+    Perspective, Orthogonal
+};
+
 struct camera {
     transform trans;
+    ProjectionMode mode = ProjectionMode::Perspective;
     //fov in radius
     union {
         float fov = 0.25 * M_PI;
@@ -29,6 +34,14 @@ struct camera {
     auto getOrthogonalProjectionMatrix() const {
         return ::getOrthogonalProjectionMatrix(size, aspect, far, near);
     }
+
+    auto getProjectionMatrix() const {
+        if (mode == ProjectionMode::Perspective) {
+            return getPerspectiveProjectionMatrix();
+        } else if (mode == ProjectionMode::Orthogonal) {
+            return getOrthogonalProjectionMatrix();
+        }
+    };
 };
 
 #endif //MYSOFTWARERENDERPIPE_CAMERA_H

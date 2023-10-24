@@ -9,7 +9,7 @@
 void renderer::render() {
     refreshBuffer();
     auto view_mat = mainCamera.getViewMatrix();
-    auto proj_mat = mainCamera.getPerspectiveProjectionMatrix();
+    auto proj_mat = mainCamera.getProjectionMatrix();
     for (int i = 0; i < objs.size(); ++i) {
         auto &obj = objs[i];
         auto &model = models[obj.modelId];
