@@ -6,6 +6,7 @@
 #define MYSOFTWARERENDERPIPE_RENDERER_H
 
 #include "vector"
+#include "bitset"
 
 #include "model.h"
 #include "transform.h"
@@ -46,6 +47,16 @@ protected:
                     &vData[triangle[1]],
                     &vData[triangle[2]],
             };
+            std::bitset<6> pointOutOfBound[3];
+            for (int i = 0; i < 3; ++i) {
+                for (int j = 0; j < 3; ++j) {
+                    pointOutOfBound[i][j * 2] = triangleVertexData[i]->clipPos[j] > 1;
+                    pointOutOfBound[i][j * 2 + 1] = triangleVertexData[i]->clipPos[j] < -1;
+                }
+            }
+            if ((pointOutOfBound[0] & pointOutOfBound[1] & pointOutOfBound[2]).any()) {
+                continue;
+            }
             Vector3f vertexScreenPos[3];
             for (int j = 0; j < 3; ++j) {
                 vertexScreenPos[j] = {
