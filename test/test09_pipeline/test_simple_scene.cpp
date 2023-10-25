@@ -44,7 +44,7 @@ vector<std::pair<string, std::pair<string, string>>> modelFiles{
         }
 };
 vector<std::pair<string, transform>> sceneObjects{
-        {string{"bunny"}, {}},
+        {string{"bunny"}, {Vector3f{}, Vector3f{50,50,50}, {}}},
 };
 
 void init(renderer &r) {
