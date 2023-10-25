@@ -111,9 +111,9 @@ void shadePointInTriangle(GraphicsBuffer *buffer,
         return;
     }
     if constexpr (!std::is_same_v<void, DepthBuffer>) {
-        if ((*depthBuffer)[x][y] > depth) {
+        if ((*depthBuffer)[x][y] > -depth) {
             (*buffer)[x][y] = shader.shade(vertexBuffer, alpha, beta, gamma);
-            (*depthBuffer)[x][y] = depth;
+            (*depthBuffer)[x][y] = -depth;
         }
     } else {
         (*buffer)[x][y] = shader.shade(vertexBuffer, alpha, beta, gamma);

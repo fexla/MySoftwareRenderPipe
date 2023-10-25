@@ -20,8 +20,8 @@ struct camera {
         float size;
     };
     float aspect = 1920.0 / 1080.0;
-    float near = 0.01;
-    float far = 100;
+    float near = -0.01;
+    float far = -100;
 
     auto getViewMatrix() const {
         return ::getViewMatrix(trans);
