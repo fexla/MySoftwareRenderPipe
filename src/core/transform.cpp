@@ -9,8 +9,8 @@ Matrix4x4 getModelMatrix(const transform &objectTransform) {
     auto matrix = rotation.rotationMatrix();
     Matrix4x4 scaleMat{
             objectTransform.scale[0], 0, 0, 0,
-            0, objectTransform.scale[0], 0, 0,
-            0, 0, objectTransform.scale[0], 0,
+            0, objectTransform.scale[1], 0, 0,
+            0, 0, objectTransform.scale[2], 0,
             0, 0, 0, 1
     };
     matrix = matrix * scaleMat;
