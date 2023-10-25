@@ -107,7 +107,7 @@ void shadePointInTriangle(GraphicsBuffer *buffer,
         }
     }
     float depth = 1.f / (alpha / vertexPos[0][2] + beta / vertexPos[1][2] + gamma / vertexPos[2][2]);
-    if (depth >= 0) {
+    if (depth > 1 || depth < -1) {
         return;
     }
     if constexpr (!std::is_same_v<void, DepthBuffer>) {
