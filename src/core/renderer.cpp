@@ -8,36 +8,24 @@
 
 void renderer::render() {
     refreshBuffer();
+
     auto view_mat = mainCamera.getViewMatrix();
     auto proj_mat = mainCamera.getProjectionMatrix();
     for (int i = 0; i < objs.size(); ++i) {
         auto &obj = objs[i];
-        auto &model = models[obj.modelId];
         auto model_mat = getModelMatrix(obj.objTransform);
-        std::vector<DefVtxDataInPip> vData{model.vertices.size()};
 
         //准备顶点
-        for (int v = 0; v < model.vertices.size(); ++v) {
-            auto modelData = model.vertices[v];
-            Vector4f pos = {modelData.pos[0], modelData.pos[1], modelData.pos[2], 1};
-            pos[3] = 1;
-            auto worldPos = model_mat * pos;
-            auto viewPos = view_mat * worldPos;
-            auto clipPos = proj_mat * viewPos;
-            clipPos /= clipPos[3];
-            vData[v] = DefVtxDataInPip{
-                    worldPos,
-                    clipPos,
-                    modelData.norm,
-                    modelData.texcoord,
-                    -viewPos[2]};
-        }
+        std::vector<DefVtxDataInPip> vData = geometryProcess(view_mat, proj_mat, model_mat, obj);
+
+        //配置材质
         auto dir2world = obj.objTransform.rotation.rotationMatrix3x3();
-        //光栅化
         obj.objMaterial->obj2world = &model_mat;
         obj.objMaterial->dir2world = &dir2world;
         obj.objMaterial->directionLights = &directionLights;
-        obj.objMaterial->renderTarget(renderBuffer, model, vData);
+
+        //光栅化
+        obj.objMaterial->renderTarget(renderBuffer, models[obj.modelId], vData);
     }
 }
 
@@ -62,6 +50,30 @@ void renderer::refreshBuffer() {
             depthBuffer[i][j] = std::numeric_limits<float>::max();
         }
     }
+}
+
+std::vector<DefVtxDataInPip>
+renderer::geometryProcess(Matrix4x4 &view_mat, Matrix4x4 &proj_mat, Matrix4x4 &model_mat, scene_obj obj) {
+    auto &model = models[obj.modelId];
+    std::vector<DefVtxDataInPip> vData{model.vertices.size()};
+
+    //准备顶点
+    for (int v = 0; v < model.vertices.size(); ++v) {
+        auto modelData = model.vertices[v];
+        Vector4f pos = {modelData.pos[0], modelData.pos[1], modelData.pos[2], 1};
+        pos[3] = 1;
+        auto worldPos = model_mat * pos;
+        auto viewPos = view_mat * worldPos;
+        auto clipPos = proj_mat * viewPos;
+        clipPos /= clipPos[3];
+        vData[v] = DefVtxDataInPip{
+                worldPos,
+                clipPos,
+                modelData.norm,
+                modelData.texcoord,
+                -viewPos[2]};
+    }
+    return vData;
 }
 
 void material::renderTarget(buffer2d<color> &renderBuffer, model &model, std::vector<DefVtxDataInPip> &vData) const {

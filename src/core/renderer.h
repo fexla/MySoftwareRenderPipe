@@ -69,6 +69,9 @@ public:
 
     void addObj(const scene_obj &obj);
 
+private :
+    std::vector<DefVtxDataInPip> geometryProcess
+            (Matrix4x4 &view_mat, Matrix4x4 &proj_mat, Matrix4x4 &model_mat, scene_obj obj);
 };
 
 
