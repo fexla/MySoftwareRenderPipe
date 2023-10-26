@@ -182,7 +182,7 @@ rasterize_triangle(GraphicsBuffer *buffer,
             endX = ceil(right + 0.5) - 0.5;
             while (curX < endX) {
                 shadePointInTriangle(buffer, depthBuffer, vertexBuffer, vertexPos, shader,
-                                     {curX, curY}, {curX, curY});
+                                     {curX, curY}, {(int) curX, (int) curY});
                 curX += 1;
             }
             curY += 1;
@@ -203,7 +203,7 @@ rasterize_triangle(GraphicsBuffer *buffer,
             endX = ceil(right + 0.5) - 0.5;
             while (curX < endX) {
                 shadePointInTriangle(buffer, depthBuffer, vertexBuffer, vertexPos, shader,
-                                     {curX, curY}, {curX, curY});
+                                     {curX, curY}, {(int) curX, (int) curY});
                 curX += 1;
             }
             curY += 1;
