@@ -148,11 +148,6 @@ rasterize_triangle(GraphicsBuffer *buffer,
             midL = {vertexPos[2][0], vertexPos[2][1]},
             midR;
 
-    //背面剔除
-    if (isTriangleClockwise({bottom, top, midL})) {
-        return;
-    }
-
     //将三角形三个点按y值排序
     if (midL[1] > top[1]) {
         std::swap(midL, top);

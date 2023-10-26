@@ -59,6 +59,15 @@ protected:
             if ((pointOutOfBound[0] & pointOutOfBound[1] & pointOutOfBound[2]).any()) {
                 continue;
             }
+            //背面剔除
+            if (isTriangleClockwise(
+                    {
+                            Vector2f{triangleVertexData[0]->clipPos[0], triangleVertexData[0]->clipPos[1]},
+                            Vector2f{triangleVertexData[1]->clipPos[0], triangleVertexData[1]->clipPos[1]},
+                            Vector2f{triangleVertexData[2]->clipPos[0], triangleVertexData[2]->clipPos[1]},
+                    })) {
+                continue;
+            }
             Vector3f vertexScreenPos[3];
             for (int j = 0; j < 3; ++j) {
                 vertexScreenPos[j] = {
