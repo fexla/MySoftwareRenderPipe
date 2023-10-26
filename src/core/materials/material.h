@@ -1,33 +1,47 @@
 //
-// Created by q on 2023/10/23.
+// Created by q on 2023/10/26.
 //
 
-#ifndef MYSOFTWARERENDERPIPE_MATERIAL_WITH_DEPTH_H
-#define MYSOFTWARERENDERPIPE_MATERIAL_WITH_DEPTH_H
+#ifndef MYSOFTWARERENDERPIPE_MATERIAL_H
+#define MYSOFTWARERENDERPIPE_MATERIAL_H
 
 #include "bitset"
 
-#include "renderer.h"
+#include "buffer.h"
+#include "light.h"
+#include "model.h"
 #include "rasterization.h"
+#include "renderer_math.h"
+#include "shader.h"
 
-class show_depth : public frag_shader<DefVtxDataInPip> {
-public:
-    color shade(const DefVtxDataInPip *[3], float, float, float);
+struct vertex_wpos_cpos_norm_uv_dep {
+    Vector4f worldPos;
+    Vector4f clipPos;
+    Normal norm;
+    Texcoord uv;
+    float dep;
 };
 
-class material_with_depth : public material {
+//默认下渲染管线中的顶点数据类型
+using DefVtxDataInPip = vertex_wpos_cpos_norm_uv_dep;
+
+class material {
 public:
-    buffer2d<float> *depthBuffer;
+    virtual void renderTarget(buffer2d<color> &, model &, std::vector<DefVtxDataInPip> &) const;
 
-    void renderTarget(buffer2d<color> &renderBuffer, model &model, std::vector<DefVtxDataInPip> &vector) const override;
-
+    mutable Matrix4x4 *obj2world;
+    mutable Matrix3x3 *dir2world;
+    mutable std::vector<std::unique_ptr<direction_light>> *directionLights;
 protected:
     template<typename VertexData, typename Shader>
     std::enable_if_t<std::is_base_of_v<frag_shader<VertexData>, Shader>, void>
-    shadeTarget(buffer2d<color> &renderBuffer,
+    shadeTarget(buffer2d<color>
+                &renderBuffer,
                 model &model,
-                std::vector<VertexData> &vData,
-                Shader &shader) const {
+                std::vector<VertexData>
+                &vData,
+                Shader &shader
+    ) const {
         for (int t = 0; t < model.triangles.size(); ++t) {
             auto &triangle = model.triangles[t];
             const DefVtxDataInPip *triangleVertexData[3]{
@@ -55,7 +69,6 @@ protected:
             }
             rasterize_triangle(
                     &renderBuffer,
-                    depthBuffer,
                     triangleVertexData,
                     vertexScreenPos,
                     shader
@@ -64,5 +77,5 @@ protected:
     }
 };
 
-
-#endif //MYSOFTWARERENDERPIPE_MATERIAL_WITH_DEPTH_H
+const material DEFAULT_MATERIAL{};
+#endif //MYSOFTWARERENDERPIPE_MATERIAL_H

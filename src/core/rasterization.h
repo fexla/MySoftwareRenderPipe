@@ -5,6 +5,7 @@
 #ifndef MYSOFTWARERENDERPIPE_RASTERIZATION_H
 #define MYSOFTWARERENDERPIPE_RASTERIZATION_H
 
+#include "buffer.h"
 #include "renderer_math.h"
 #include "shader.h"
 #include "utility.h"
@@ -112,11 +113,14 @@ void shadePointInTriangle(GraphicsBuffer *buffer,
     }
     if constexpr (!std::is_same_v<void, DepthBuffer>) {
         if ((*depthBuffer)[x][y] > -depth) {
-            (*buffer)[x][y] = shader.shade(vertexBuffer, alpha, beta, gamma);
             (*depthBuffer)[x][y] = -depth;
+            if constexpr (!std::is_same_v<void, GraphicsBuffer>)
+                (*buffer)[x][y] = shader.shade(vertexBuffer, alpha, beta, gamma);
+
         }
     } else {
-        (*buffer)[x][y] = shader.shade(vertexBuffer, alpha, beta, gamma);
+        if constexpr (!std::is_same_v<void, GraphicsBuffer>)
+            (*buffer)[x][y] = shader.shade(vertexBuffer, alpha, beta, gamma);
     }
 }
 

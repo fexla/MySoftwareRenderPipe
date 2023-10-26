@@ -2,9 +2,11 @@
 // Created by q on 2023/10/20.
 //
 
+#include "renderer.h"
+
 #include <limits>
 
-#include "renderer.h"
+#include "scene_obj.h"
 
 void renderer::render() {
     refreshBuffer();

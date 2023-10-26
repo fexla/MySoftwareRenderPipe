@@ -19,6 +19,8 @@ add_library(renderer_core STATIC
         materials/material_lambert.cpp
         fps_counter.cpp
         fps_counter.h
+        materials/material.h
+        scene_obj.h
 )
 
 set_target_properties(renderer_core PROPERTIES LINKER_LANGUAGE CXX)
