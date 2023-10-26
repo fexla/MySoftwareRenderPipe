@@ -16,3 +16,5 @@ target_link_libraries(test03_1 PUBLIC
         renderer_core
 )
 
+add_executable(test03_2 test_get_eye_field.cpp)
+target_link_libraries(test03_2 renderer_math renderer_core)
