@@ -37,7 +37,7 @@ Matrix4x4 getPerspectiveProjectionMatrix(float fov, float aspect, float far, flo
     return {
             1 / tan(fov) / aspect, 0, 0, 0,
             0, 1 / tanh(fov), 0, 0,
-            0, 0, (far + near) / (far - near), -2 * near * far / (far - near),
+            0, 0, (far + near) / (near - far), 2 * near * far / (far - near),
             0, 0, -1, 0
     };
 }
@@ -46,7 +46,7 @@ Matrix4x4 getOrthogonalProjectionMatrix(float size, float aspect, float far, flo
     return {
             1 / (size * aspect), 0, 0, 0,
             0, 1 / size, 0, 0,
-            0, 0, -2 / (far - near), (far + near) / (far - near),
+            0, 0, 2 / (far - near), (far + near) / (near - far),
             0, 0, 0, 1
     };
 }
