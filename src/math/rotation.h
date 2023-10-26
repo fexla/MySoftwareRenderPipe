@@ -10,6 +10,10 @@
 
 class EulerAngle {
 public:
+    EulerAngle() : x(0), y(0), z(0) {}
+
+    EulerAngle(float x, float y, float z) : x(x), y(y), z(z) {}
+
     float &roll() {
         return x;
     }
@@ -22,6 +26,10 @@ public:
         return z;
     }
 
+    /**
+     * 外旋顺序：X-Y-Z
+     * @return 旋转矩阵
+     */
     Matrix4x4 rotationMatrix() const {
         float s3 = sin(x);
         float s2 = sin(y);
@@ -49,5 +57,22 @@ public:
 
     float x, y, z;
 };
+
+inline double vec2Angle(double x, double y) {
+    double lensq = x * x + y * y;
+    if (lensq == 0)return 0;
+    double angle = acos(x / sqrt(lensq));
+    return y > 0 ? angle : (2 * M_PI - angle);
+}
+
+inline EulerAngle vec2Euler(Vector3f vec) {
+    vec.normalize();
+    double x = vec[0], y = vec[1], z = vec[2];
+    double vec2len = sqrt(x * x + y * y);
+    float ry = acos(vec2len);
+    if (z > 0)ry = 2 * (float) M_PI - ry;
+    float rz = vec2Angle(x, y) - vec2Angle(vec2len, 0);
+    return {0, ry, rz};
+}
 
 #endif //MYSOFTWARERENDERPIPE_ROTATION_H

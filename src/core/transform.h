@@ -10,7 +10,7 @@
 
 class transform {
 public:
-    transform() : position{0}, rotation{0}, scale{1, 1, 1} {}
+    transform() : position{0}, rotation{}, scale{1, 1, 1} {}
 
     transform(const Vector3f &position, const EulerAngle &rotation) :
             position(position), rotation(rotation), scale{1, 1, 1} {}
