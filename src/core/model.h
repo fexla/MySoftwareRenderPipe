@@ -64,8 +64,6 @@ public:
         if (!ret) {
             exit(1);
         }
-        vertices.resize(attrib.vertices.size());
-        triangles.resize(attrib.vertices.size());
         int triangle_id = 0;
 
 // Loop over shapes
@@ -74,7 +72,7 @@ public:
             size_t index_offset = 0;
             for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
                 int fv = shapes[s].mesh.num_face_vertices[f];
-
+                triangles.push_back({});
 // Loop over vertices in the face.
                 for (size_t v = 0; v < fv; v++) {
 // access to vertex
@@ -93,11 +91,10 @@ public:
                         tx = attrib.texcoords[2 * idx.texcoord_index + 0];
                         ty = attrib.texcoords[2 * idx.texcoord_index + 1];
                     }
-                    vertices[idx.vertex_index] = {
-                            {vx, vy, vz},
-                            {nx, ny, nz},
-                            {tx, ty}};
-                    triangles[triangle_id][v] = idx.vertex_index;
+                    vertices.push_back({{vx, vy, vz},
+                                        {nx, ny, nz},
+                                        {tx, ty}});
+                    triangles[triangle_id][v] = vertices.size() - 1;
                 }
                 triangle_id++;
                 index_offset += fv;
