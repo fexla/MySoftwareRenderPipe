@@ -70,7 +70,7 @@ protected:
                     })) {
                 continue;
             }
-            array<Vector3f, 3> vertexScreenPos;
+            std::array<Vector3f, 3> vertexScreenPos;
             for (int j = 0; j < 3; ++j) {
                 vertexScreenPos[j] = {
                         (vData[triangle[j]].clipPos[0] / 2 + 0.5f) * renderBuffer.getWidth(),

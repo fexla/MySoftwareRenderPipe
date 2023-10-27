@@ -6,11 +6,10 @@
 #define MYSOFTWARERENDERPIPE_UTILITY_H
 
 #include "array"
+
 #include "rm_type_names.h"
 
-using std::array;
-
-inline bool isTriangleClockwise(array<Vector2f, 3> triangle) {
+inline bool isTriangleClockwise(std::array<Vector2f, 3> triangle) {
     auto v1 = triangle[1] - triangle[0];
     auto v2 = triangle[2] - triangle[0];
     return v1.cross(v2) < 0;

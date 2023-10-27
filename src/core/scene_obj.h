@@ -5,8 +5,8 @@
 #ifndef MYSOFTWARERENDERPIPE_SCENE_OBJ_H
 #define MYSOFTWARERENDERPIPE_SCENE_OBJ_H
 
-#include "transform.h"
 #include "materials/material.h"
+#include "transform.h"
 
 struct scene_obj {
     std::string modelId;

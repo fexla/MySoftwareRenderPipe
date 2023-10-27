@@ -3,9 +3,8 @@
 //
 
 #include "material_texture.h"
-#include "rasterization.h"
 
-class color show_texture::shade(const DefVtxDataInPip *vertexBuffer[3], array<float, 3> coord) {
+class color show_texture::shade(const DefVtxDataInPip *vertexBuffer[3], std::array<float, 3> coord) {
     float u = vertexBuffer[0]->uv[0] * coord[0] +
               vertexBuffer[1]->uv[0] * coord[1] +
               vertexBuffer[2]->uv[0] * coord[2];

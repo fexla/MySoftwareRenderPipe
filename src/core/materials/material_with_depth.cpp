@@ -3,9 +3,10 @@
 //
 
 #include "material_with_depth.h"
+
 #include "iostream"
 
-class color show_depth::shade(const DefVtxDataInPip *vertexBuffer[3], array<float, 3> coord) {
+class color show_depth::shade(const DefVtxDataInPip *vertexBuffer[3], std::array<float, 3> coord) {
     color c{0, 0, 0};
     float depth = interpolation({vertexBuffer[0]->dep, vertexBuffer[1]->dep, vertexBuffer[2]->dep}, coord);
     float gray = log10(depth);

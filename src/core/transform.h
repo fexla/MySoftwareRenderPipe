@@ -5,8 +5,9 @@
 #ifndef MYSOFTWARERENDERPIPE_TRANSFORM_H
 #define MYSOFTWARERENDERPIPE_TRANSFORM_H
 
-#include "renderer_math.h"
 #include "cmath"
+
+#include "renderer_math.h"
 
 class transform {
 public:

@@ -91,7 +91,7 @@ template<typename GraphicsBuffer, typename DepthBuffer = void, typename VertexDa
 void shadePointInTriangle(GraphicsBuffer *buffer,
                           DepthBuffer *depthBuffer,
                           const VertexData *vertexBuffer[3],
-                          array<Vector3f, 3> vertexPos,
+                          std::array<Vector3f, 3> vertexPos,
                           Shader &shader,
                           Vector2f realPos,
                           Vector2i pixelPos) {
@@ -141,7 +141,7 @@ std::enable_if_t<std::is_base_of_v<frag_shader<VertexData>, Shader>, void>
 rasterize_triangle(GraphicsBuffer *buffer,
                    DepthBuffer *depthBuffer,
                    const VertexData *vertexBuffer[3],
-                   array<Vector3f, 3> vertexPos,
+                   std::array<Vector3f, 3> vertexPos,
                    Shader &shader) {
     Vector2f bottom = {vertexPos[0][0], vertexPos[0][1]},
             top = {vertexPos[1][0], vertexPos[1][1]},
@@ -254,7 +254,7 @@ template<typename GraphicsBuffer, typename VertexData, typename Shader>
 std::enable_if_t<std::is_base_of_v<frag_shader<VertexData>, Shader>, void>
 rasterize_triangle(GraphicsBuffer *buffer,
                    const VertexData *vertexBuffer[3],
-                   array<Vector3f, 3> vertexPos,
+                   std::array<Vector3f, 3> vertexPos,
                    Shader &shader) {
     rasterize_triangle<GraphicsBuffer, void, VertexData, Shader>
             (buffer, nullptr, vertexBuffer, vertexPos, shader);

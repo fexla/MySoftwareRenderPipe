@@ -4,7 +4,6 @@
 #include "cmath"
 
 #include "light_with_shadow.h"
-
 #include "rasterization.h"
 
 float direction_light_shadow::getShadow(Vector4f pos) {
@@ -76,7 +75,7 @@ void direction_light_shadow::updateShadow(std::map<std::string, model> &models, 
             clipPos /= clipPos[3];
             vData[v] = ShadowVertexData{clipPos};
         }
-        for (auto & triangle : model.triangles) {
+        for (auto &triangle: model.triangles) {
             const ShadowVertexData *triangleVertexData[3]{
                     &vData[triangle[0]],
                     &vData[triangle[1]],
@@ -101,7 +100,7 @@ void direction_light_shadow::updateShadow(std::map<std::string, model> &models, 
                     })) {
                 continue;
             }
-            array<Vector3f, 3> vertexScreenPos;
+            std::array<Vector3f, 3> vertexScreenPos;
             for (int j = 0; j < 3; ++j) {
                 vertexScreenPos[j] = {
                         (vData[triangle[j]].clipPos[0] / 2 + 0.5f) * zBuffer.getWidth(),

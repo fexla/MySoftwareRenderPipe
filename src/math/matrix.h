@@ -2,7 +2,8 @@
 // Created by q on 2023/10/17.
 //
 #include <cassert>
-#include "iostream"
+
+#include "ostream"
 
 #ifndef MYSOFTWARERENDERPIPE_TENSOR_H
 #define MYSOFTWARERENDERPIPE_TENSOR_H

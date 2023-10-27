@@ -1,28 +1,28 @@
 add_library(renderer_core STATIC
-        transform.h
-        transform.cpp
-        rasterization.h
-        shader.h
-        color.h
-        texture.h
-        renderer.cpp
-        renderer.h
-        model.h
-        camera.h
         buffer.h
-        materials/material_with_depth.cpp
-        materials/material_with_depth.h
-        materials/material_texture.cpp
-        materials/material_texture.h
-        light.h
-        materials/material_lambert.h
-        materials/material_lambert.cpp
+        camera.h
+        color.h
         fps_counter.cpp
         fps_counter.h
-        materials/material.h
-        scene_obj.h
-        light_with_shadow.h
+        light.h
         light_with_shadow.cpp
+        light_with_shadow.h
+        materials/material_lambert.cpp
+        materials/material_lambert.h
+        materials/material_texture.cpp
+        materials/material_texture.h
+        materials/material_with_depth.cpp
+        materials/material_with_depth.h
+        materials/material.h
+        model.h
+        rasterization.h
+        renderer.cpp
+        renderer.h
+        scene_obj.h
+        shader.h
+        texture.h
+        transform.cpp
+        transform.h
 )
 
 set_target_properties(renderer_core PROPERTIES LINKER_LANGUAGE CXX)

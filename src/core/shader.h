@@ -43,14 +43,14 @@ public:
      * @param pos 要获取顶点坐标的片元坐标
      * @return 重心坐标
      */
-    array<float, 3> getCoord(array<Vector3f, 3> vertices, Vector2f pos) {
+    std::array<float, 3> getCoord(std::array<Vector3f, 3> vertices, Vector2f pos) {
         auto coord = barycentric_coordinates2d(pos, {
                 Vector2f{vertices[0][0], vertices[0][1]},
                 Vector2f{vertices[1][0], vertices[1][1]},
                 Vector2f{vertices[2][0], vertices[2][1]},
         });
         if (projectionMode == ProjectionMode::Perspective) {
-            array<float, 3> originDep = {vertices[0][2], vertices[1][2], vertices[2][2]};
+            std::array<float, 3> originDep = {vertices[0][2], vertices[1][2], vertices[2][2]};
             float depth = interpolation(originDep, coord);
             interpolation_correction(coord, originDep, depth);
         }
@@ -63,7 +63,7 @@ public:
      * @param coord 片元的重心坐标
      * @return 颜色
      */
-    color shade(const VertexData *vertexBuffer[3], array<float, 3> coord) {
+    color shade(const VertexData *vertexBuffer[3], std::array<float, 3> coord) {
         return C_WHITE;
     }
 

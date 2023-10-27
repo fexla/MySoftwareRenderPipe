@@ -6,7 +6,8 @@
 #define MYSOFTWARERENDERPIPE_MVECTOR_H
 
 #include <ostream>
-#include <math.h>
+#include <cmath>
+
 #include "matrix.h"
 
 template<typename Data_Type, size_t Dim>

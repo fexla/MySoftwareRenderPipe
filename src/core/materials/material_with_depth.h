@@ -7,12 +7,12 @@
 
 #include "bitset"
 
-#include "renderer.h"
 #include "rasterization.h"
+#include "renderer.h"
 
 class show_depth : public frag_shader<DefVtxDataInPip> {
 public:
-    color shade(const DefVtxDataInPip *[3], array<float, 3> coord);
+    color shade(const DefVtxDataInPip *[3], std::array<float, 3> coord);
 };
 
 class material_with_depth : public material {
@@ -55,7 +55,7 @@ protected:
                     })) {
                 continue;
             }
-            array<Vector3f, 3> vertexScreenPos;
+            std::array<Vector3f, 3> vertexScreenPos;
             for (int j = 0; j < 3; ++j) {
                 vertexScreenPos[j] = {
                         (vData[triangle[j]].clipPos[0] / 2 + 0.5f) * renderBuffer.getWidth(),

@@ -2,9 +2,10 @@
 // Created by q on 2023/10/23.
 //
 #include "material_lambert.h"
+
 #include "light_with_shadow.h"
 
-class color lambert_shader::shade(const DefVtxDataInPip *vertexBuffer[3], array<float, 3> coord) {
+class color lambert_shader::shade(const DefVtxDataInPip *vertexBuffer[3], std::array<float, 3> coord) {
     Vector3f norm = vertexBuffer[0]->norm * coord[0] +
                     vertexBuffer[1]->norm * coord[1] +
                     vertexBuffer[2]->norm * coord[2];
