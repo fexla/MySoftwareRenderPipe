@@ -7,9 +7,11 @@
 #include <limits>
 
 #include "scene_obj.h"
+#include "light_with_shadow.h"
 
 void renderer::render() {
     refreshBuffer();
+    updateShadowMap();
 
     auto view_mat = mainCamera.getViewMatrix();
     auto proj_mat = mainCamera.getProjectionMatrix();
@@ -77,6 +79,17 @@ renderer::geometryProcess(Matrix4x4 &view_mat, Matrix4x4 &proj_mat, Matrix4x4 &m
                 -viewPos[2]};
     }
     return vData;
+}
+
+void renderer::updateShadowMap() {
+    std::vector<Vector4f> eyeFieldVertices = mainCamera.getEyeFieldVertices();
+
+    for (auto &plight: directionLights) {
+        if (auto *shadowLight = dynamic_cast<light_with_shadow *>(plight.get())) {
+            shadowLight->updateFrustrum(eyeFieldVertices);
+            shadowLight->updateShadow(models, objs);
+        }
+    }
 }
 
 void material::renderTarget(buffer2d<color> &renderBuffer, model &model, std::vector<DefVtxDataInPip> &vData) const {

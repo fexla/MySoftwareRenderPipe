@@ -21,6 +21,8 @@ add_library(renderer_core STATIC
         fps_counter.h
         materials/material.h
         scene_obj.h
+        light_with_shadow.h
+        light_with_shadow.cpp
 )
 
 set_target_properties(renderer_core PROPERTIES LINKER_LANGUAGE CXX)
