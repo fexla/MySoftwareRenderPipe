@@ -103,6 +103,10 @@ void shadePointInTriangle(GraphicsBuffer *buffer,
         if (x >= buffer->getWidth() || y >= buffer->getHeight()) {
             return;
         }
+    } else if constexpr (std::is_base_of_v<buffer2d<float>, DepthBuffer>) {
+        if (x >= depthBuffer->getWidth() || y >= depthBuffer->getHeight()) {
+            return;
+        }
     }
     //根据重心坐标计算片元深度，进行深度测试
     float depth = interpolation({vertexPos[0][2], vertexPos[1][2], vertexPos[2][2]}, coord);
@@ -169,6 +173,13 @@ rasterize_triangle(GraphicsBuffer *buffer,
         float curY, endY;
         curY = floor(bottom[1] + 0.5) + 0.5;
         endY = ceil(midL[1] - 0.5) + 0.5;
+        if constexpr (std::is_base_of_v<buffer2d<color>, GraphicsBuffer>) {
+            curY = std::max(0.5f, curY);
+            endY = std::min(buffer->getHeight() + 0.5f, endY);
+        } else if constexpr (std::is_base_of_v<buffer2d<float>, DepthBuffer>) {
+            curY = std::max(0.5f, curY);
+            endY = std::min(depthBuffer->getHeight() + 0.5f, endY);
+        }
         while (curY < endY) {
             float deltaY = curY - bottom[1];
             float left = bottom[0] + kBottomMidLInv * deltaY,
@@ -176,6 +187,13 @@ rasterize_triangle(GraphicsBuffer *buffer,
             float curX, endX;
             curX = floor(left + 0.5) + 0.5;
             endX = ceil(right + 0.5) - 0.5;
+            if constexpr (std::is_base_of_v<buffer2d<color>, GraphicsBuffer>) {
+                curX = std::max(0.5f, curX);
+                endX = std::min(buffer->getWidth() + 0.5f, endX);
+            } else if constexpr (std::is_base_of_v<buffer2d<float>, DepthBuffer>) {
+                curX = std::max(0.5f, curX);
+                endX = std::min(depthBuffer->getWidth() + 0.5f, endX);
+            }
             while (curX < endX) {
                 shadePointInTriangle(buffer, depthBuffer, vertexBuffer, vertexPos, shader,
                                      {curX, curY}, {(int) curX, (int) curY});
@@ -190,6 +208,13 @@ rasterize_triangle(GraphicsBuffer *buffer,
         float curY, endY;
         curY = floor(midL[1] + 0.5) + 0.5;
         endY = ceil(top[1] + 0.5) - 0.5;
+        if constexpr (std::is_base_of_v<buffer2d<color>, GraphicsBuffer>) {
+            curY = std::max(0.5f, curY);
+            endY = std::min(buffer->getHeight() + 0.5f, endY);
+        } else if constexpr (std::is_base_of_v<buffer2d<float>, DepthBuffer>) {
+            curY = std::max(0.5f, curY);
+            endY = std::min(depthBuffer->getHeight() + 0.5f, endY);
+        }
         while (curY <= endY) {
             float deltaY = curY - top[1];
             float left = top[0] + kTopMidLInv * deltaY,
@@ -197,6 +222,13 @@ rasterize_triangle(GraphicsBuffer *buffer,
             float curX, endX;
             curX = floor(left + 0.5) + 0.5;
             endX = ceil(right + 0.5) - 0.5;
+            if constexpr (std::is_base_of_v<buffer2d<color>, GraphicsBuffer>) {
+                curX = std::max(0.5f, curX);
+                endX = std::min(buffer->getWidth() + 0.5f, endX);
+            } else if constexpr (std::is_base_of_v<buffer2d<float>, DepthBuffer>) {
+                curX = std::max(0.5f, curX);
+                endX = std::min(depthBuffer->getWidth() + 0.5f, endX);
+            }
             while (curX < endX) {
                 shadePointInTriangle(buffer, depthBuffer, vertexBuffer, vertexPos, shader,
                                      {curX, curY}, {(int) curX, (int) curY});
