@@ -91,15 +91,12 @@ template<typename GraphicsBuffer, typename DepthBuffer = void, typename VertexDa
 void shadePointInTriangle(GraphicsBuffer *buffer,
                           DepthBuffer *depthBuffer,
                           const VertexData *vertexBuffer[3],
-                          Vector3f vertexPos[3],
+                          array<Vector3f, 3> vertexPos,
                           Shader &shader,
                           Vector2f realPos,
                           Vector2i pixelPos) {
-    auto [alpha, beta, gamma] = barycentric_coordinates2d(realPos, {
-            Vector2f{vertexPos[0][0], vertexPos[0][1]},
-            Vector2f{vertexPos[1][0], vertexPos[1][1]},
-            Vector2f{vertexPos[2][0], vertexPos[2][1]},
-    });
+    //获得三角形重心坐标
+    auto coord = shader.getCoord(vertexPos, realPos);
     unsigned int x = pixelPos[0];
     unsigned int y = pixelPos[1];
     if constexpr (std::is_base_of_v<buffer2d<color>, GraphicsBuffer>) {
@@ -107,7 +104,8 @@ void shadePointInTriangle(GraphicsBuffer *buffer,
             return;
         }
     }
-    float depth = 1.f / (alpha / vertexPos[0][2] + beta / vertexPos[1][2] + gamma / vertexPos[2][2]);
+    //根据重心坐标计算片元深度，进行深度测试
+    float depth = interpolation({vertexPos[0][2], vertexPos[1][2], vertexPos[2][2]}, coord);
     if (depth > 1 || depth < -1) {
         return;
     }
@@ -119,7 +117,7 @@ void shadePointInTriangle(GraphicsBuffer *buffer,
         }
     }
     if constexpr (!std::is_same_v<void, GraphicsBuffer>)
-        (*buffer)[x][y] = shader.shade(vertexBuffer, alpha, beta, gamma);
+        (*buffer)[x][y] = shader.shade(vertexBuffer, coord);
 }
 
 /**
@@ -139,7 +137,7 @@ std::enable_if_t<std::is_base_of_v<frag_shader<VertexData>, Shader>, void>
 rasterize_triangle(GraphicsBuffer *buffer,
                    DepthBuffer *depthBuffer,
                    const VertexData *vertexBuffer[3],
-                   Vector3f vertexPos[3],
+                   array<Vector3f, 3> vertexPos,
                    Shader &shader) {
     Vector2f bottom = {vertexPos[0][0], vertexPos[0][1]},
             top = {vertexPos[1][0], vertexPos[1][1]},
@@ -224,7 +222,7 @@ template<typename GraphicsBuffer, typename VertexData, typename Shader>
 std::enable_if_t<std::is_base_of_v<frag_shader<VertexData>, Shader>, void>
 rasterize_triangle(GraphicsBuffer *buffer,
                    const VertexData *vertexBuffer[3],
-                   Vector3f vertexPos[3],
+                   array<Vector3f, 3> vertexPos,
                    Shader &shader) {
     rasterize_triangle<GraphicsBuffer, void, VertexData, Shader>
             (buffer, nullptr, vertexBuffer, vertexPos, shader);

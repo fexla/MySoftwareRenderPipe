@@ -29,6 +29,7 @@ class material {
 public:
     virtual void renderTarget(buffer2d<color> &, model &, std::vector<DefVtxDataInPip> &) const;
 
+    mutable ProjectionMode projectionMode;
     mutable Matrix4x4 *obj2world;
     mutable Matrix3x3 *dir2world;
     mutable std::vector<std::unique_ptr<direction_light>> *directionLights;
@@ -42,6 +43,7 @@ protected:
                 &vData,
                 Shader &shader
     ) const {
+        shader.projectionMode = projectionMode;
         for (int t = 0; t < model.triangles.size(); ++t) {
             auto &triangle = model.triangles[t];
             const DefVtxDataInPip *triangleVertexData[3]{
@@ -68,7 +70,7 @@ protected:
                     })) {
                 continue;
             }
-            Vector3f vertexScreenPos[3];
+            array<Vector3f, 3> vertexScreenPos;
             for (int j = 0; j < 3; ++j) {
                 vertexScreenPos[j] = {
                         (vData[triangle[j]].clipPos[0] / 2 + 0.5f) * renderBuffer.getWidth(),

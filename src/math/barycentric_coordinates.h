@@ -24,9 +24,16 @@ inline array<float, 3> barycentric_coordinates2d(Vector2f pos, array<Vector2f, 3
     return {1 - beta - gamma, beta, gamma};
 }
 
-inline array<float, 3> interpolation_correction(
-        const array<float, 3> &coord, const array<float, 3> &dep, float trueDep) {
-    return {coord[0] * trueDep / dep[0], coord[1] * trueDep / dep[1], coord[2] * trueDep / dep[2]};
+inline void interpolation_correction(array<float, 3> &coord, const array<float, 3> &dep, float trueDep) {
+    coord[0] = coord[0] * trueDep / dep[0];
+    coord[1] = coord[1] * trueDep / dep[1];
+    coord[2] = coord[2] * trueDep / dep[2];
+}
+
+template<typename DataType = float>
+inline std::enable_if_t<std::is_arithmetic_v<DataType>, DataType>
+interpolation(const array<DataType, 3> &value, const array<float, 3> &coord) {
+    return value[0] * coord[0] + value[1] * coord[1] + value[2] * coord[2];
 }
 
 #endif //MYSOFTWARERENDERPIPE_BARYCENTRIC_COORDINATES_H

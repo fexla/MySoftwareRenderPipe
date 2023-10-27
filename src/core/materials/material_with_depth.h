@@ -12,7 +12,7 @@
 
 class show_depth : public frag_shader<DefVtxDataInPip> {
 public:
-    color shade(const DefVtxDataInPip *[3], float, float, float);
+    color shade(const DefVtxDataInPip *[3], array<float, 3> coord);
 };
 
 class material_with_depth : public material {
@@ -28,6 +28,7 @@ protected:
                 model &model,
                 std::vector<VertexData> &vData,
                 Shader &shader) const {
+        shader.projectionMode = projectionMode;
         for (int t = 0; t < model.triangles.size(); ++t) {
             auto &triangle = model.triangles[t];
             const DefVtxDataInPip *triangleVertexData[3]{
@@ -54,7 +55,7 @@ protected:
                     })) {
                 continue;
             }
-            Vector3f vertexScreenPos[3];
+            array<Vector3f, 3> vertexScreenPos;
             for (int j = 0; j < 3; ++j) {
                 vertexScreenPos[j] = {
                         (vData[triangle[j]].clipPos[0] / 2 + 0.5f) * renderBuffer.getWidth(),

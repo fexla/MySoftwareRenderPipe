@@ -5,12 +5,9 @@
 #include "material_with_depth.h"
 #include "iostream"
 
-class color show_depth::shade(const DefVtxDataInPip *vertexBuffer[3],
-                              float alpha,
-                              float beta,
-                              float gamma) {
+class color show_depth::shade(const DefVtxDataInPip *vertexBuffer[3], array<float, 3> coord) {
     color c{0, 0, 0};
-    float depth = 1.f / (alpha / vertexBuffer[0]->dep + beta / vertexBuffer[1]->dep + gamma / vertexBuffer[2]->dep);
+    float depth = interpolation({vertexBuffer[0]->dep, vertexBuffer[1]->dep, vertexBuffer[2]->dep}, coord);
     float gray = log10(depth);
     gray -= floor(gray);
     gray = std::min(gray, 1.f);

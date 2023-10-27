@@ -3,20 +3,13 @@
 //
 #include "material_lambert.h"
 
-class color lambert_shader::shade(const DefVtxDataInPip *vertexBuffer[3],
-                                  float alpha,
-                                  float beta,
-                                  float gamma) {
-    float depth = 1.f / (alpha / vertexBuffer[0]->dep + beta / vertexBuffer[1]->dep + gamma / vertexBuffer[2]->dep);
-    auto trueCoord = interpolation_correction(
-            {alpha, beta, gamma},
-            {vertexBuffer[0]->dep, vertexBuffer[1]->dep, vertexBuffer[2]->dep},
-            depth
-    );
-    Vector3f norm =
-            vertexBuffer[0]->norm * trueCoord[0] +
-            vertexBuffer[1]->norm * trueCoord[1] +
-            vertexBuffer[2]->norm * trueCoord[2];
+class color lambert_shader::shade(const DefVtxDataInPip *vertexBuffer[3], array<float, 3> coord) {
+    Vector3f norm = vertexBuffer[0]->norm * coord[0] +
+                    vertexBuffer[1]->norm * coord[1] +
+                    vertexBuffer[2]->norm * coord[2];
+    Vector4f wpos = vertexBuffer[0]->worldPos * coord[0] +
+                    vertexBuffer[1]->worldPos * coord[1] +
+                    vertexBuffer[2]->worldPos * coord[2];
     norm = *dir2world * norm;
     norm.normalize();
 

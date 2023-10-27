@@ -16,7 +16,7 @@
 
 class lambert_shader : public frag_shader<DefVtxDataInPip> {
 public:
-    color shade(const DefVtxDataInPip *[3], float, float, float);
+    color shade(const DefVtxDataInPip *[3], array<float, 3> coord);
 
     std::vector<std::unique_ptr<direction_light>> *directionLights;
 

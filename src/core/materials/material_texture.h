@@ -14,7 +14,7 @@
 
 class show_texture : public frag_shader<DefVtxDataInPip> {
 public:
-    color shade(const DefVtxDataInPip *[3], float, float, float);
+    color shade(const DefVtxDataInPip *[3], array<float, 3> coord);
 
     Texture *texture;
 };

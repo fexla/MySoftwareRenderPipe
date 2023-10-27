@@ -22,6 +22,7 @@ void renderer::render() {
 
         //配置材质
         auto dir2world = obj.objTransform.rotation.rotationMatrix3x3();
+        obj.objMaterial->projectionMode = mainCamera.mode;
         obj.objMaterial->obj2world = &model_mat;
         obj.objMaterial->dir2world = &dir2world;
         obj.objMaterial->directionLights = &directionLights;
@@ -80,6 +81,6 @@ renderer::geometryProcess(Matrix4x4 &view_mat, Matrix4x4 &proj_mat, Matrix4x4 &m
 
 void material::renderTarget(buffer2d<color> &renderBuffer, model &model, std::vector<DefVtxDataInPip> &vData) const {
     //光栅化
-    frag_shader<DefVtxDataInPip> shader;
+    frag_shader <DefVtxDataInPip> shader;
     shadeTarget(renderBuffer, model, vData, shader);
 }
