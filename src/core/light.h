@@ -13,6 +13,10 @@
 struct direction_light {
     Vector3f direction;
     float intensity;
+
+    direction_light(const Vector3f &direction, float intensity) : direction(direction), intensity(intensity) {}
+
+    virtual ~direction_light() = default;
 };
 
 #endif //MYSOFTWARERENDERPIPE_LIGHT_H
