@@ -30,4 +30,17 @@ Matrix4x4 getViewMatrix(const transform &cameraTransform);
 Matrix4x4 getPerspectiveProjectionMatrix(float fov, float aspect, float far, float near);
 
 Matrix4x4 getOrthogonalProjectionMatrix(float size, float aspect, float far, float near);
+
+/**
+ * 获得平移矩阵
+ * @return
+ */
+Matrix4x4 getTranslationMatrix(Vector3f to, Vector3f from = Vector3f{});
+
+/**
+ * 获得缩放矩阵
+ * @return
+ */
+Matrix4x4 getScaleMatrix(Vector3f scale);
+
 #endif //MYSOFTWARERENDERPIPE_TRANSFORM_H

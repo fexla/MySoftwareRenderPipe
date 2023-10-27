@@ -50,3 +50,21 @@ Matrix4x4 getOrthogonalProjectionMatrix(float size, float aspect, float far, flo
             0, 0, 0, 1
     };
 }
+
+Matrix4x4 getTranslationMatrix(Vector3f to, Vector3f from) {
+    return {
+            1, 0, 0, to[0] - from[0],
+            0, 1, 0, to[1] - from[1],
+            0, 0, 1, to[2] - from[2],
+            0, 0, 0, 1,
+    };
+}
+
+Matrix4x4 getScaleMatrix(Vector3f scale) {
+    return {
+            scale[0], 0, 0, 0,
+            0, scale[1], 0, 0,
+            0, 0, scale[2], 0,
+            0, 0, 0, 1
+    };
+}
