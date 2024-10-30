@@ -2,8 +2,8 @@
 // Created by q on 2023/10/20.
 //
 #define TINYOBJLOADER_IMPLEMENTATION // define this in only *one* .cc
+#define STB_IMAGE_IMPLEMENTATION
 
-#include <random>
 #include "map"
 #include "string"
 #include "vector"
@@ -55,43 +55,46 @@ void showdepth(DepthBuffer &zBuffer) {
 vector<std::pair<string, std::pair<string, string>>> modelFiles{
         {"bunny",
                 {
-                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\bunny\bunny_fix_n.obj)",
+//                        R"(models\bunny\bunny_n.obj)",
+                        R"(models\bunny\bunny_fix_n.obj)",
                         R"()"
                 }
         },
-        {"crate",
-                {
-                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\Crate\Crate1.obj)",
-                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\Crate\crate_1.jpg)",
-                }
-        },
+//        {"crate",
+//                {
+//                        R"(models\Crate\Crate1.obj)",
+//                        R"(models\Crate\crate_1.jpg)",
+//                }
+//        },
         {"cube",
                 {
-                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\cube\my cube.obj)",
+                        R"(models\cube\cube.obj)",
                         "",
                 }
         },
         {"spot",
                 {
-                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\spot\spot_triangulated_good.obj)",
-                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\spot\spot_texture.png)",
+                        R"(models\spot\spot_triangulated_good.obj)",
+                        R"(models\spot\spot_texture.png)",
                 }
         },
         {"rock",
                 {
-                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\rock\rock.obj)",
+                        R"(models\rock\rock.obj)",
                         R"()"
                 }
         },
 };
 vector<std::pair<string, transform>> sceneObjects{
-        {string{"bunny"}, {Vector3f{0, 0, -5}, Vector3f{50, 50, 50},   {}}},
+//        {string{"bunny"}, {Vector3f{0, 0, -5}, Vector3f{50, 50, 50}, {}}},
+        {string{"spot"}, {Vector3f{0, 1, -5}, Vector3f{3, 3, 3}, {}}},
         {string{"cube"},  {Vector3f{0, 1.5, 8},  Vector3f{1, 3, 1},      {0, 2, 0}}},
         {string{"cube"},  {Vector3f{3, 0, 1},  Vector3f{3, 1, 1},      {4, 4, 0}}},
         {string{"cube"},  {Vector3f{0, -1, 0}, Vector3f{10, 0.1, 10}, {}}},
 };
 
 material_lambert material;
+material_texture material_t;
 std::vector<std::unique_ptr<direction_light>> lights;
 int x = 0;
 
@@ -104,39 +107,50 @@ void init(renderer &r) {
     r.mainCamera.size = 12;
     r.mainCamera.aspect = 1.0 * W / H;
     r.mainCamera.far = -30;
+
+//    auto image_data = cv::imread("", cv::IMREAD_UNCHANGED);
+//    r.mainCamera.mode = ProjectionMode::Perspective;
+//    r.mainCamera.aspect = 1.0 * W / H;
+//    r.mainCamera.far = -50;
     material.depthBuffer = &r.depthBuffer;
-    for (auto [m_name, path]: modelFiles) {
+    material_t.depthBuffer = &r.depthBuffer;
+    for ( auto& [m_name, path]: modelFiles) {
         r.addModel(m_name, model{path.first, path.second});
     }
-    for (auto [obj_id, obj_tran]: sceneObjects) {
-        r.addObj({obj_id, obj_tran, &material});
+    for (const auto& [obj_id, obj_tran]: sceneObjects) {
+        scene_obj obj{obj_id, obj_tran};
+        if(obj_id == "spot"){
+            obj.objMaterial = &material_t;
+        }else{
+            obj.objMaterial = &material;
+        }
+        r.addObj(obj);
     }
     r.directionLights = std::move(lights);
+    material_t.texture = &r.models["spot"].texture;
 }
 
 
-int main(void) {
+int main() {
     renderer r{W, H};
     init(r);
     GLFWwindow *window;
 
     /* Initialize the library */
-    if (!glfwInit())
+    if(!glfwInit())
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(W, H, "Hello World", NULL, NULL);
-    if (!window) {
+    if(!window) {
         glfwTerminate();
         return -1;
     }
 
-    /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
     int x = 0;
     fpsCounter fpsCounter;
-    /* Loop until the user closes the window */
     while (!(glfwWindowShouldClose(window))) {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);

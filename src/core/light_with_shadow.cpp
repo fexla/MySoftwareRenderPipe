@@ -18,7 +18,8 @@ float direction_light_shadow::getShadow(Vector4f pos) {
             (clipPos[1] / 2 + 0.5f) * zBuffer.getHeight(),
     };
     float depth = clipPos[2];
-    return zBuffer[lround(bufferPos[0] + 0.5f)][lround(bufferPos[1] + 0.5f)] < depth - 0.00001;
+//    return zBuffer[lround(bufferPos[0] + 0.5f)][lround(bufferPos[1] + 0.5f)] < depth - 0.00001;
+    return zBuffer[static_cast<int>(bufferPos[0])][static_cast<int>(bufferPos[1])] < depth - 0.01;
 }
 
 static int x = 0;
@@ -37,8 +38,8 @@ void direction_light_shadow::updateFrustrum(const std::vector<Vector4f> &points)
         Vector4f vPos = view_mat * wPos;
 
         for (int j = 0; j < 3; ++j) {
-            aabb[0][j] = std::min(vPos[j], aabb[0][j]);
-            aabb[1][j] = std::max(vPos[j], aabb[1][j]);
+            aabb[0][j] = std::min(vPos[j]-10, aabb[0][j]);
+            aabb[1][j] = std::max(vPos[j]+10, aabb[1][j]);
         }
     }
     Matrix4x4 translation_mat = getTranslationMatrix({0, 0, 0}, {

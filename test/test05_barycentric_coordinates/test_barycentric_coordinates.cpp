@@ -8,7 +8,7 @@ using std::cout;
 using std::endl;
 
 int main() {
-    array<Vector2f, 3> pos{
+    std::array<Vector2f, 3> pos{
             Vector2f{0, 0},
             Vector2f{3, 0},
             Vector2f{0, 4},

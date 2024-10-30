@@ -5,6 +5,7 @@
 #ifndef MYSOFTWARERENDERPIPE_MATERIAL_H
 #define MYSOFTWARERENDERPIPE_MATERIAL_H
 
+#include <memory>
 #include "bitset"
 
 #include "buffer.h"

@@ -5,6 +5,7 @@
 #ifndef MYSOFTWARERENDERPIPE_MODEL_H
 #define MYSOFTWARERENDERPIPE_MODEL_H
 
+#include "iostream"
 
 #include "vector"
 #include "array"

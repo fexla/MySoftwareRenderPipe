@@ -208,6 +208,27 @@ public:
         mvector vec = *this;
         return vec.normalize();
     }
+
+    /**
+     * 得到一个长度为NewDim的新向量，如果新向量长度大于原向量，则多出来的位置会补充defaultValue为默认值。
+     * @tparam NewDim 新向量长度
+     * @param defaultValue 默认值
+     * @return 长度为NewDim的新向量
+     */
+    template<size_t NewDim>
+    mvector<Data_Type, NewDim> resize(Data_Type defaultValue = 0) {
+        constexpr size_t SmallSize = std::min(NewDim, Dim);
+        mvector<Data_Type, NewDim> res;
+        for (int i = 0; i < SmallSize; ++i) {
+            res[i] = (*this)[i];
+        }
+        if constexpr (NewDim > Dim) {
+            for (int i = Dim; i < NewDim; ++i) {
+                res[i] = defaultValue;
+            }
+        }
+        return res;
+    }
 };
 
 

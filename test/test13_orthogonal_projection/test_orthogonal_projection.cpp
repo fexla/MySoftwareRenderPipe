@@ -42,28 +42,28 @@ void refresh(Graphic_Buffer &graphicBuffer) {
 vector<std::pair<string, std::pair<string, string>>> modelFiles{
         {"bunny",
                 {
-                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\bunny\bunny_n.obj)",
+                        R"(models\bunny\bunny_n.obj)",
                         R"()"
                 }
         },
-        {"crate",
-                {
-                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\Crate\Crate1.obj)",
-                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\Crate\crate_1.jpg)",
-                }
-        },
-        {"spot",
-                {
-                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\spot\spot_triangulated_good.obj)",
-                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\spot\spot_texture.png)",
-                }
-        },
-        {"rock",
-                {
-                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\rock\rock.obj)",
-                        R"()"
-                }
-        },
+//        {"crate",
+//                {
+//                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\Crate\Crate1.obj)",
+//                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\Crate\crate_1.jpg)",
+//                }
+//        },
+//        {"spot",
+//                {
+//                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\spot\spot_triangulated_good.obj)",
+//                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\spot\spot_texture.png)",
+//                }
+//        },
+//        {"rock",
+//                {
+//                        R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\rock\rock.obj)",
+//                        R"()"
+//                }
+//        },
 };
 vector<std::pair<string, transform>> sceneObjects{
         {string{"bunny"}, {Vector3f{0, 0, 0}, Vector3f{50, 50, 50}, {}}},

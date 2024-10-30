@@ -1,12 +1,15 @@
 //
 // Created by q on 2023/10/19.
 //
+#include "iostream"
+#include "array"
 #include <random>
 #include "renderer_math.h"
 #include "utility.h"
 
 using std::cout;
 using std::endl;
+using std::array;
 
 void test_triangle(array<Vector2f, 3> &triangle) {
     cout << "test triangle:\n";

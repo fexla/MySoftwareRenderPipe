@@ -72,9 +72,9 @@ int main(void) {
     float lineLen = 80;
     for (int i = 0; i < pointNum; ++i) {
         float angle = 1.0 * i / pointNum * M_PI * 2;
-        Vector3f pos{(W / 2 + 100 + lineLen * cos(angle)),
-                     (H / 2 + lineLen * sin(angle))};
-        rasterize_line(a, {W / 2 + 100, H / 2}, pos, &C_RED, &C_Blue, shader_lerp);
+        Vector3f pos{static_cast<float>((W / 2 + 100 + lineLen * cos(angle))),
+                     static_cast<float>((H / 2 + lineLen * sin(angle)))};
+        rasterize_line(a, {W / 2 + 100, H / 2}, pos, &C_RED, &C_BLUE, shader_lerp);
     }
 
 

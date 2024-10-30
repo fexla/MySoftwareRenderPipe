@@ -4,7 +4,7 @@
 #include "GLFW/glfw3.h"
 #include "texture.h"
 
-const std::string filepath = "E:\\Projects\\Exercise1_SoftwareRenderPipe/lappland.png";
+const std::string filepath = "lappland.png";
 
 const int W = 1024;
 const int H = 1024;

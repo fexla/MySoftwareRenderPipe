@@ -30,8 +30,9 @@ target_compile_features(renderer_core PUBLIC cxx_std_17)
 target_include_directories(renderer_core PUBLIC
         ./
         ${EXTERNAL}/obj_loader
+        ${EXTERNAL}/stb
 )
 target_link_libraries(renderer_core PUBLIC
         renderer_math
-        ${OpenCV_LIBS}
+#        ${OpenCV_LIBS}
 )

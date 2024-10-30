@@ -4,7 +4,7 @@
 #include <opencv2/opencv.hpp>
 #include "iostream"
 
-const std::string filepath = "E:\\Projects\\Exercise1_SoftwareRenderPipe/lappland.png";
+const std::string filepath = "lappland.png";
 
 int main() {
     cv::Mat image_data = cv::imread(filepath, cv::IMREAD_UNCHANGED);
