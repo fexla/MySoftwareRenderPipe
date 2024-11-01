@@ -12,7 +12,6 @@
 //#include "stb_image.h"
 //#undef STB_IMAGE_IMPLEMENTATION
 //#endif
-
 #include "stb_image.h"
 #include "string"
 #include "color.h"
@@ -62,11 +61,11 @@ public:
         int pixel_index = 3 * (v_img * width + u_img);
 
         // 获取RGB值
-        unsigned char r = -idata[pixel_index];
-        unsigned char g = -idata[pixel_index + 1];
-        unsigned char b = -idata[pixel_index + 2];
+        unsigned char r = idata[pixel_index];
+        unsigned char g = idata[pixel_index + 1];
+        unsigned char b = idata[pixel_index + 2];
 
-        return color{static_cast<float>(r), static_cast<float>(g), static_cast<float>(b), 1};
+        return color{r / 255.0f, g / 255.0f, b / 255.0f, 1};
     }
 
     int getWidth() const {

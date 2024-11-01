@@ -17,6 +17,9 @@ public:
     color shade(const DefVtxDataInPip *[3], std::array<float, 3> coord);
 
     Texture *texture;
+    Matrix3x3 *dir2world;
+    std::vector<std::unique_ptr<direction_light>> *directionLights;
+
 };
 
 class material_texture : public material_with_depth {

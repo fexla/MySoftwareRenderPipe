@@ -99,7 +99,7 @@ std::vector<std::unique_ptr<direction_light>> lights;
 int x = 0;
 
 void init(renderer &r) {
-    lights.emplace_back(new direction_light_shadow{1000, Vector3f{0, -1, 0}.normalize(), 0.3});
+    lights.emplace_back(new direction_light_shadow{1600, Vector3f{0, -1, 0}.normalize(), 0.3});
     transform camera = {{16,   15,              0},
                         {-0.5, 3.1415926 * 0.5, 0}};
     r.mainCamera = {camera};

@@ -19,7 +19,7 @@ float direction_light_shadow::getShadow(Vector4f pos) {
     };
     float depth = clipPos[2];
 //    return zBuffer[lround(bufferPos[0] + 0.5f)][lround(bufferPos[1] + 0.5f)] < depth - 0.00001;
-    return zBuffer[static_cast<int>(bufferPos[0])][static_cast<int>(bufferPos[1])] < depth - 0.01;
+    return zBuffer[static_cast<int>(bufferPos[0])][static_cast<int>(bufferPos[1])] < depth + 0.001;
 }
 
 static int x = 0;
