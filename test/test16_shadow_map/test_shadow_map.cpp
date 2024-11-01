@@ -23,8 +23,8 @@ using std::string;
 using std::map;
 using std::vector;
 
-const int W = 600;
-const int H = 600;
+const int W = 1920;
+const int H = 1080;
 
 char buffer[W * H * 3];
 

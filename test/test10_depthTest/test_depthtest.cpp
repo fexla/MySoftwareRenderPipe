@@ -38,25 +38,25 @@ void refresh(Graphic_Buffer &graphicBuffer) {
 vector<std::pair<string, std::pair<string, string>>> modelFiles{
         {"bunny",
          {
-                 R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\bunny\bunny.obj)",
+                 R"(models\bunny\bunny.obj)",
                  R"()"
          }
         },
         {"crate",
          {
-                 R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\Crate\Crate1.obj)",
+                 R"(models\Crate\Crate1.obj)",
                  R"()"
          }
         },
         {"spot",
          {
-                 R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\spot\spot_control_mesh.obj)",
+                 R"(models\spot\spot_control_mesh.obj)",
                  R"()"
          }
         },
         {"rock",
          {
-                 R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\rock\rock.obj)",
+                 R"(models\rock\rock.obj)",
                  R"()"
          }
         },

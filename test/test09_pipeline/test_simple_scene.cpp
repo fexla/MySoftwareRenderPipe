@@ -38,7 +38,7 @@ void refresh(Graphic_Buffer &graphicBuffer) {
 vector<std::pair<string, std::pair<string, string>>> modelFiles{
         {"bunny",
          {
-                 R"(E:\Projects\Exercise1_SoftwareRenderPipe\models\bunny\bunny.obj)",
+                 R"(models\bunny\bunny.obj)",
                  R"()"
          }
         }
